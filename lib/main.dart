@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:startup_namer/words_list.dart';
+import 'package:startup_namer/my_routes.dart';
+import 'package:startup_namer/upcoming.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -35,11 +36,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 1: Upcoming',
-      style: optionStyle,
-    ),
-    RandomWords(),
+    MyRoutes(),
+    UpcomingTours(),
     Text(
       'Index 2: Profile',
       style: optionStyle,
@@ -61,8 +59,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add route',
+            icon: Icon(Icons.list),
+            label: 'My routes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
