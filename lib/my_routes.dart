@@ -46,41 +46,74 @@ class _MyRoutes extends State<MyRoutes> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(   // NEW from here ...
+    return Scaffold(
       appBar: AppBar(
         title: const Text('My routes'),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemBuilder: (context, i) {
-          if (i.isOdd) return const Divider();
-
-          final index = i ~/ 2;
-          if (index >= _suggestions.length) {
+          if (i >= _suggestions.length) {
             _suggestions.addAll(generateWordPairs().take(10));
           }
 
-          final alreadySaved = _saved.contains(_suggestions[index]); // NEW
-          return ListTile(
-            title: Text(
-              _suggestions[index].asPascalCase,
-              style: _biggerFont,
+          final alreadySaved = _saved.contains(_suggestions[i]);
+          return Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                ListTile(
+                  leading: const CircleAvatar(
+                    backgroundImage: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                    radius: 10,
+
+                  ),
+                  title: Text(
+                    _suggestions[i].asPascalCase,
+                    style: _biggerFont,
+                  ),
+                  subtitle: Text(
+                    _suggestions[i].asPascalCase,
+                    style: _biggerFont,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton(
+                        onPressed: () {},
+                        child: const Text('Edit')
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                        onPressed: () {},
+                        child: const Text('Delete')
+                    )
+                  ],
+                )
+              ],
             ),
-            trailing: Icon(    // NEW from here ...
-              alreadySaved ? Icons.rocket_launch : Icons.rocket,
-              color: alreadySaved ? Colors.indigo : null,
-              semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
-            ),
-            onTap: () {          // NEW from here ...
-              setState(() {
-                if (alreadySaved) {
-                  _saved.remove(_suggestions[index]);
-                } else {
-                  _saved.add(_suggestions[index]);
-                }
-              });                // to here.
-            },
           );
+          // return ListTile(
+          //   title: Text(
+          //     _suggestions[index].asPascalCase,
+          //     style: _biggerFont,
+          //   ),
+          //   trailing: Icon(    // NEW from here ...
+          //     alreadySaved ? Icons.rocket_launch : Icons.rocket,
+          //     color: alreadySaved ? Colors.indigo : null,
+          //     semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
+          //   ),
+          //   onTap: () {          // NEW from here ...
+          //     setState(() {
+          //       if (alreadySaved) {
+          //         _saved.remove(_suggestions[index]);
+          //       } else {
+          //         _saved.add(_suggestions[index]);
+          //       }
+          //     });                // to here.
+          //   },
+          // );
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
