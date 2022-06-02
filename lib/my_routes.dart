@@ -83,12 +83,14 @@ class _MyRoutes extends State<MyRoutes> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // Add your onPressed code here!
         },
+        label: const Text('Add new route'),
+        icon: const Icon(Icons.add),
         backgroundColor: Colors.green,
-        child: const Icon(Icons.navigation),
       ),
     );
 
