@@ -1,121 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';  // Add this line.
-import 'package:flutter/material.dart';
-
-
+import 'package:startup_namer/words_list.dart';
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  static const String _title = "Upcoming";
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Startup Name Generator',
+      title: _title,
       theme: ThemeData(          // Add the 5 lines from here...
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.indigo,
           foregroundColor: Colors.white,
         ),
       ),
-      home: const RandomWords(),
+      home: const MyStatefulWidget(),
     );
   }
 }
 
-class RandomWords extends StatefulWidget {
-  const RandomWords({Key? key}) : super(key: key);
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  State<RandomWords> createState() => _RandomWordsState();
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
-class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _saved = <WordPair>{};
-  final _biggerFont = const TextStyle(fontSize: 18);
-  void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) {
-          final tiles = _saved.map(
-                (pair) {
-              return ListTile(
-                title: Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            },
-          );
-          final divided = tiles.isNotEmpty
-              ? ListTile.divideTiles(
-            context: context,
-            tiles: tiles,
-          ).toList()
-              : <Widget>[];
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  int _selectedIndex = 1;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 1: Upcoming',
+      style: optionStyle,
+    ),
+    RandomWords(),
+    Text(
+      'Index 2: Profile',
+      style: optionStyle,
+    ),
+  ];
 
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Saved Suggestions'),
-            ),
-            body: ListView(children: divided),
-          );
-        },
-      ),
-    );
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(   // NEW from here ...
-        appBar: AppBar(
-          title: const Text('Startup Name Generator'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.list),
-              onPressed: _pushSaved,
-              tooltip: 'Saved Suggestions',
-            ),
-          ],
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: (context, i) {
-          if (i.isOdd) return const Divider();
-
-          final index = i ~/ 2;
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
-
-          final alreadySaved = _saved.contains(_suggestions[index]); // NEW
-          return ListTile(
-            title: Text(
-              _suggestions[index].asPascalCase,
-              style: _biggerFont,
-            ),
-            trailing: Icon(    // NEW from here ...
-              alreadySaved ? Icons.rocket_launch : Icons.rocket,
-              color: alreadySaved ? Colors.indigo : null,
-              semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
-            ),
-            onTap: () {          // NEW from here ...
-              setState(() {
-                if (alreadySaved) {
-                  _saved.remove(_suggestions[index]);
-                } else {
-                  _saved.add(_suggestions[index]);
-                }
-              });                // to here.
-            },
-          );
-        },
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Add route',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.schedule),
+            label: 'Upcoming',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
-
   }
 }
+
+
+
 
