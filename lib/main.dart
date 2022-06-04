@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:startup_namer/create_route.dart';
 import 'package:startup_namer/my_routes.dart';
 import 'package:startup_namer/upcoming.dart';
 void main() {
@@ -37,7 +38,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     MyRoutes(),
-    UpcomingTours(),
+    CreateRoute(),
     Text(
       'Index 2: Profile',
       style: optionStyle,
