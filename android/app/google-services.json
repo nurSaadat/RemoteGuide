@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "451322406270",
+    "project_id": "remote-guide",
+    "storage_bucket": "remote-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451322406270:android:6fd41e1e55a60dbd3e3f2f",
+        "android_client_info": {
+          "package_name": "com.nurmar.remote_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451322406270-fc048op6q6q2so9jo9gcsd9fgkpem55i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGCfHwDMrvqeJ5prETl4VQhSgeNSQHrVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451322406270-fc048op6q6q2so9jo9gcsd9fgkpem55i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

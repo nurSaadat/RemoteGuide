@@ -1,6 +1,6 @@
 {
-    "name": "startup_namer",
-    "short_name": "startup_namer",
+    "name": "remote_guide_firebase",
+    "short_name": "remote_guide_firebase",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
