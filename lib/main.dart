@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:startup_namer/map.dart';
 import 'package:startup_namer/my_routes.dart';
 import 'package:startup_namer/upcoming.dart';
 void main() {
@@ -38,10 +39,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const List<Widget> _widgetOptions = <Widget>[
     MyRoutes(),
     UpcomingTours(),
-    Text(
-      'Index 2: Profile',
-      style: optionStyle,
-    ),
+    MyMap(),
+    // Text(
+    //   'Index 2: Profile',
+    //   style: optionStyle,
+    // ),
   ];
 
   void _onItemTapped(int index) {
