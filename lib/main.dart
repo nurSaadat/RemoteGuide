@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:startup_namer/create_route.dart';
 import 'package:startup_namer/my_routes.dart';
 import 'package:startup_namer/upcoming.dart';
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -14,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      theme: ThemeData(          // Add the 5 lines from here...
+      theme: ThemeData(
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.indigo,
           foregroundColor: Colors.white,
