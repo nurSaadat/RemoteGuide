@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class CustomListItem extends StatelessWidget {
@@ -111,9 +110,7 @@ class Tour {
 }
 
 class RoutesList extends StatelessWidget {
-  RoutesList({Key? key}) : super(key: key);
-
-  final storage = FirebaseStorage.instance;
+  const RoutesList({Key? key}) : super(key: key);
 
   static final List<Map<String, dynamic>> data = [
     {
@@ -161,7 +158,7 @@ class _MyRoutes extends State<MyRoutes> {
       appBar: AppBar(
         title: const Text('My routes'),
       ),
-      body: RoutesList(),
+      body: const RoutesList(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
