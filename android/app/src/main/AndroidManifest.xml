@@ -4,7 +4,11 @@
         android:label="startup_namer"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <activity
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyBuQa-_td5BBeS-bTfnYczJYV_LcUuu4DM"/>
+
+       <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
