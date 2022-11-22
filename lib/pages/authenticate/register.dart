@@ -30,18 +30,21 @@ class _RegisterState extends State<Register> {
 
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
-        backgroundColor: Colors.brown[100],
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.brown[400],
+          backgroundColor: Colors.blue[600],
           elevation: 0.0,
-          title: Text('Sign Up to Remote Guide'),
+          title: Text('Registration'),
           actions: <Widget>[
             TextButton.icon(
               icon: Icon(Icons.person),
-              label: Text('Sign In'),
+              label: Text('Sign in'),
               onPressed: () {
                 widget.toggleView();
               },
+              style: TextButton.styleFrom(
+                  primary: Colors.white
+              ),
             )
           ],
         ),
@@ -53,7 +56,9 @@ class _RegisterState extends State<Register> {
                   children: <Widget>[
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Enter Your Username'),
+                      decoration: const InputDecoration(
+                        labelText: 'Username',
+                      ),
                       validator: (val) => val!.isEmpty ? 'Enter the username' : null,
                       onChanged: (val) {
                         setState(() => username = val);
@@ -61,7 +66,9 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Enter Your Name'),
+                      decoration: const InputDecoration(
+                        labelText: 'Full name',
+                      ),
                       validator: (val) => val!.isEmpty ? 'Enter the name' : null,
                       onChanged: (val) {
                         setState(() => name = val);
@@ -69,7 +76,9 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Enter Your Email'),
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                      ),
                       validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                       onChanged: (val) {
                         setState(() => email = val);
@@ -77,7 +86,9 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Enter Your Password'),
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                      ),
                       obscureText: true,
                       validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
                       onChanged: (val) {
@@ -86,7 +97,9 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      decoration: textInputDecoration.copyWith(hintText: 'Repeat Your Password'),
+                      decoration: const InputDecoration(
+                        labelText: 'Repeat password',
+                      ),
                       obscureText: true,
                       validator: (val) => val != password ? 'Passwords do not match' : null,
                       onChanged: (val) {
@@ -101,16 +114,16 @@ class _RegisterState extends State<Register> {
                         setState(() {
                           guide = value;
                         });
-                      }
+                      },
                   ),
                     const SizedBox(height: 20.0),
                     ElevatedButton(
-                        child: Text('Register'),
+                        child: const Text('Sign up'),
                         style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all(Colors.pink[400]),
                             textStyle: MaterialStateProperty.all(
-                                TextStyle(color: Colors.white))),
+                                TextStyle(color: Colors.white)),
+                            padding: MaterialStateProperty.all(const EdgeInsets.all(24.0)),
+                        ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()){
                             setState(() => loading = true);

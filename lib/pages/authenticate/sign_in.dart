@@ -25,18 +25,21 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
-      backgroundColor: Colors.brown[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.brown[400],
+        backgroundColor: Colors.blue[600],
         elevation: 0.0,
-        title: Text('Sign In to Remote Guide'),
+        title: const Text('Login'),
         actions: <Widget>[
           TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Register'),
+            icon: const Icon(Icons.person_add),
+            label: const Text('Register'),
             onPressed: () {
               widget.toggleView();
             },
+            style: TextButton.styleFrom(
+              primary: Colors.white
+            ),
           )
         ],
       ),
@@ -48,7 +51,10 @@ class _SignInState extends State<SignIn> {
             children: <Widget>[
               SizedBox(height: 20.0),
               TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Enter Your Email'),
+                decoration: const InputDecoration(
+                    icon: Icon(Icons.person),
+                    labelText: 'Email',
+                  ),
                 validator: (val) => val!.isEmpty ? 'Enter an email' : null,
                 onChanged: (val) {
                   setState(() => email = val);
@@ -56,7 +62,10 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20.0),
               TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Enter Your Password'),
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.password),
+                  labelText: 'Password',
+                ),
                 obscureText: true,
                 validator: (val) => val!.length < 6 ? 'Enter a password 6+ chars long' : null,
                 onChanged: (val) {
@@ -65,12 +74,9 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20.0),
               ElevatedButton(
-                  child: Text('Sign in'),
                   style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(Colors.pink[400]),
-                      textStyle: MaterialStateProperty.all(
-                          TextStyle(color: Colors.white))),
+                      textStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white)),
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(24.0))),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()){
                       setState(() => loading = true);
@@ -82,7 +88,8 @@ class _SignInState extends State<SignIn> {
                         });
                       }
                     }
-                  }),
+                  },
+                  child: const Text('Sign in')),
               SizedBox(height: 12.0),
               Text(
                 error,
