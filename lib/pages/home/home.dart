@@ -26,6 +26,9 @@ class Home extends StatelessWidget {
             onPressed: () async{
               await _auth.signOut();
             },
+            style: TextButton.styleFrom(
+                primary: Colors.white
+            ),
           )
         ],
       ),

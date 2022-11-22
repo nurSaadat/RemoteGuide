@@ -53,7 +53,6 @@ class _SignInState extends State<SignIn> {
               TextFormField(
                 decoration: const InputDecoration(
                     icon: Icon(Icons.person),
-                    // hintText: 'Enter your email',
                     labelText: 'Email',
                   ),
                 validator: (val) => val!.isEmpty ? 'Enter an email' : null,
@@ -65,7 +64,6 @@ class _SignInState extends State<SignIn> {
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.password),
-                  // hintText: 'Enter your password',
                   labelText: 'Password',
                 ),
                 obscureText: true,
