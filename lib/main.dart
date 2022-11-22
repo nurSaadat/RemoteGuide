@@ -4,10 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:remote_guide_firebase/pages/models/myuser.dart';
 import 'package:remote_guide_firebase/pages/wrapper.dart';
 import 'package:remote_guide_firebase/services/auth.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
