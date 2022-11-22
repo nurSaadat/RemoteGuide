@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       catchError: (_, __) => null,
       value: AuthService().user,
       initialData: null,
-      child:  MaterialApp(
+      child: const MaterialApp(
         home: Wrapper(),
       )
     );

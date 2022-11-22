@@ -14,15 +14,15 @@ class Home extends StatelessWidget {
       value: DatabaseService().users,
       initialData: null,
       child: Scaffold(
-      backgroundColor: Colors.brown[50],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Remote Guide'),
-        backgroundColor: Colors.brown[400],
+        title: const Text('Home page'),
+        backgroundColor: Colors.blue[600],
         elevation: 0.0,
         actions: <Widget>[
           TextButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('LogOut'),
+            icon: const Icon(Icons.logout),
+            label: const Text('Logout'),
             onPressed: () async{
               await _auth.signOut();
             },
