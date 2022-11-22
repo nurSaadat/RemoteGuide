@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "451322406270-9j0kv3kbenh0hsqb59t8loh60knsumgk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nurmar.remote_guide",
+            "certificate_hash": "d707c9b98ff33eaf4af0f7c0500864612791a6f4"
+          }
+        },
+        {
           "client_id": "451322406270-fc048op6q6q2so9jo9gcsd9fgkpem55i.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "451322406270-fc048op6q6q2so9jo9gcsd9fgkpem55i.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "451322406270-e69bbpsp9bqqg1j3m7rljcr4t70noei1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.startupNamer"
+              }
             }
           ]
         }

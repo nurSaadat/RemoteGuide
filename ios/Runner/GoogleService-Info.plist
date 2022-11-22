@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>451322406270-l4ccks8ij549e6uvs6tckcol3idi9up1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.451322406270-l4ccks8ij549e6uvs6tckcol3idi9up1</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>451322406270-9j0kv3kbenh0hsqb59t8loh60knsumgk.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCECMrNpr4YjcHDmxEecOyVLp0614t-tqw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>451322406270</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.remoteGuideFirebase</string>
+	<key>PROJECT_ID</key>
+	<string>remote-guide</string>
+	<key>STORAGE_BUCKET</key>
+	<string>remote-guide.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:451322406270:ios:8a20edbece06b4dd3e3f2f</string>
+</dict>
+</plist>
