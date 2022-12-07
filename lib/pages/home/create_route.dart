@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../shared/filled_text_button.dart';
@@ -12,6 +15,9 @@ class CreateRoute extends StatefulWidget {
 
 class _CreateRouteState extends State<CreateRoute> {
   DateTimeRange? dateRange;
+  String name = "";
+  String description = "";
+  late File image;
 
   String getFrom() {
     if (dateRange == null) {
@@ -29,6 +35,17 @@ class _CreateRouteState extends State<CreateRoute> {
     }
   }
 
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      image = File(pickedFile.path);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,10 +56,15 @@ class _CreateRouteState extends State<CreateRoute> {
             padding: EdgeInsets.fromLTRB(12,16,12,4),
             child: Text('Tour name'),
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(12,0,12,8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12,0,12,8),
             child: TextField(
-              decoration: InputDecoration(
+              onChanged: (text) {
+                setState(() {
+                  name = text;
+                });
+              },
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter a tour name',
               ),
@@ -52,12 +74,17 @@ class _CreateRouteState extends State<CreateRoute> {
             padding: EdgeInsets.fromLTRB(12,16,12,4),
             child: Text('Tour description'),
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(12,0,12,8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12,0,12,8),
             child: TextField(
+              onChanged: (text) {
+                setState(() {
+                  description = text;
+                });
+              },
               keyboardType: TextInputType.multiline,
               maxLines: 4,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter a description',
               ),
@@ -73,7 +100,9 @@ class _CreateRouteState extends State<CreateRoute> {
               children: [
                 FilledTextButton(
                     text: 'Add image',
-                    onClicked: () {}
+                    onClicked: () {
+                      _getFromGallery();
+                    }
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
@@ -115,7 +144,12 @@ class _CreateRouteState extends State<CreateRoute> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed code here!
+          CollectionReference ref = FirebaseFirestore.instance.collection('routes');
+          ref.add({
+            "name": name,
+            "description": description,
+          });
+          print("Pressed on button!");
         },
         label: const Text('Go to the map'),
         backgroundColor: Colors.green,
