@@ -18,7 +18,7 @@ class _CreateRouteState extends State<CreateRoute> {
   DateTimeRange? dateRange;
   String name = "";
   String description = "";
-  late File image;
+  var image;
   bool loading = false;
 
   String getFrom() {
@@ -44,7 +44,7 @@ class _CreateRouteState extends State<CreateRoute> {
       maxHeight: 1800,
     );
     if (pickedFile != null) {
-      image = File(pickedFile.path);
+      setState(() => image = File(pickedFile.path));
     }
   }
 
@@ -53,8 +53,9 @@ class _CreateRouteState extends State<CreateRoute> {
     return Scaffold(
       body: Form(
         key: _formKey,
-        child: Column (
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(15.0),
           children: <Widget>[
             const Padding(
               padding: EdgeInsets.fromLTRB(12,16,12,4),
@@ -96,23 +97,19 @@ class _CreateRouteState extends State<CreateRoute> {
               padding: EdgeInsets.fromLTRB(12,16,12,4),
               child: Text('Cover image'),
             ),
+            FilledTextButton(
+                text: 'Add image',
+                onClicked: () {
+                  _getFromGallery();
+                }
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(12,0,12,8),
-              child: Row(
-                children: [
-                  FilledTextButton(
-                      text: 'Add image',
-                      onClicked: () {
-                        _getFromGallery();
-                      }
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        left: 20
-                    ),
-                    child: Text ('file_name.png'),
-                  ),
-                ],
+              child: image == null ? const Text("No image") : Image.file(
+                image,
+                fit: BoxFit.fitHeight,
+                height: 400,
+                width: 250,
               ),
             ),
             const Padding(
