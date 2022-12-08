@@ -1,14 +1,18 @@
+import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class CustomListItem extends StatelessWidget {
   const CustomListItem({
     Key? key,
-    required this.thumbnail,
+    // required this.thumbnail,
     required this.title,
     required this.subtitle,
   }) : super(key: key);
 
-  final Widget thumbnail;
+  // final Widget thumbnail;
   final String title;
   final String subtitle;
 
@@ -22,10 +26,10 @@ class CustomListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: thumbnail,
-            ),
+            // Expanded(
+            //   flex: 2,
+            //   child: thumbnail,
+            // ),
             Expanded(
               flex: 3,
               child: _Description(
@@ -109,35 +113,41 @@ class Tour {
         email = json['subtitle'];
 }
 
-class RoutesList extends StatelessWidget {
-  const RoutesList({Key? key}) : super(key: key);
+class RoutesList extends StatefulWidget {
+  final List<Map<String, dynamic>> data;
+  const RoutesList(this.data, {super.key});
 
-  static final List<Map<String, dynamic>> data = [
-    {
-      'title': 'ABC',
-      'subtitle': 'abc',
-      'thumbnail': Colors.blue,
-    },
-    {
-      'title': 'DFE',
-      'subtitle': 'dfe',
-      'thumbnail': Colors.green,
-    },
-  ];
+  @override
+  State<RoutesList> createState() => _RoutesList();
+}
+
+class _RoutesList extends State<RoutesList> {
+  // static final List<Map<String, dynamic>> data = [
+  //   {
+  //     'title': 'ABC',
+  //     'subtitle': 'abc',
+  //     'thumbnail': Colors.blue,
+  //   },
+  //   {
+  //     'title': 'DFE',
+  //     'subtitle': 'dfe',
+  //     'thumbnail': Colors.green,
+  //   },
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: const EdgeInsets.all(8.0),
       itemExtent: 150.0,
-      itemCount: data.length,
+      itemCount: widget.data.length,
       itemBuilder: (BuildContext context, int index) {
         return CustomListItem(
-          thumbnail: Container(
-            decoration: BoxDecoration(color: data[index]['thumbnail']),
-          ),
-          title: data[index]['title'],
-          subtitle: data[index]['subtitle'],
+          // thumbnail: Container(
+          //   decoration: BoxDecoration(color: data[index]['image']),
+          // ),
+          title: widget.data[index]['name'],
+          subtitle: widget.data[index]['description'],
         );
       },
     );
@@ -152,15 +162,44 @@ class MyRoutes extends StatefulWidget {
 }
 
 class _MyRoutes extends State<MyRoutes> {
+  List<Map<String, dynamic>> data = [];
+  getRouteList() {
+    CollectionReference ref = FirebaseFirestore.instance.collection('routes');
+    ref
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
+      print("[INFO] Getting the routes...");
+      for (var doc in querySnapshot.docs) {
+        // final path = 'tour_cover_images/${doc.get('imagePath')}';
+        // final ref = FirebaseStorage.instance.ref().child(path);
+        // final Uint8List? image = await ref.getData();
+        data.add({
+          "name": doc.get('name'),
+          "description": doc.get('description'),
+          // "image": image,
+        });
+        setState(() => data = data);
+      }
+    });
+  }
+  // @override
+  // void setState(VoidCallback fn) {
+  //   super.setState(fn);
+  //
+  // }
+  @override
+  void initState() {
+    super.initState();
+    getRouteList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const RoutesList(),
+      body: RoutesList(data),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
+        onPressed: () {},
         label: const Text('Add new route'),
         icon: const Icon(Icons.add),
         backgroundColor: Colors.green,
