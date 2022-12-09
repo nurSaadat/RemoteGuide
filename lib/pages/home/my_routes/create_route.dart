@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 
-import '../../shared/filled_text_button.dart';
+import '../../../shared/filled_text_button.dart';
 
 class CreateRoute extends StatefulWidget {
   const CreateRoute({Key? key}) : super(key: key);
@@ -154,7 +154,7 @@ class _CreateRouteState extends State<CreateRoute> {
           if (_formKey.currentState!.validate()) {
             // setState(() => loading = true);
             final ref = FirebaseFirestore.instance;
-            ref.collection('routes').add({
+            ref.collection('routes').doc(name).set({
               "name": name,
               "description": description,
               "imagePath": basename(imagePath),
