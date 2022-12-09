@@ -59,6 +59,11 @@ class _CreateRouteState extends State<CreateRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('New tour creation'),
+        backgroundColor: Colors.blue[600],
+        elevation: 0.0,
+      ),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -152,7 +157,6 @@ class _CreateRouteState extends State<CreateRoute> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            // setState(() => loading = true);
             final ref = FirebaseFirestore.instance;
             ref.collection('routes').doc(name).set({
               "name": name,
@@ -162,8 +166,9 @@ class _CreateRouteState extends State<CreateRoute> {
           }
           uploadFile();
           print("[INFO] Route is being created...");
+          // go back to the previous page
+          Navigator.pop(context);
         },
-
         label: const Text('Go to the map'),
         backgroundColor: Colors.green,
       ),
