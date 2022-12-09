@@ -1,22 +1,31 @@
-import 'dart:typed_data';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CustomListItem extends StatelessWidget {
   const CustomListItem({
     Key? key,
+    required this.onDelete,
     required this.thumbnail,
     required this.title,
     required this.subtitle,
   }) : super(key: key);
 
+  final Function onDelete;
   final Widget thumbnail;
   final String title;
   final String subtitle;
+
+  void handleClick(String value) {
+    switch (value) {
+      case 'Edit':
+        print("[INFO] Edit");
+        break;
+      case 'Delete':
+        print("[INFO] Delete");
+        onDelete(title);
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,29 +48,17 @@ class CustomListItem extends StatelessWidget {
                 subtitle: subtitle,
               ),
             ),
-            GestureDetector(
-              onTap: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('AlertDialog Title'),
-                  content: const Text('AlertDialog description'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'OK'),
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
+              PopupMenuButton<String>(
+                onSelected: handleClick,
+                itemBuilder: (BuildContext context) {
+                  return {'Edit', 'Delete'}.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                  }).toList();
+                },
               ),
-              child: const Icon(
-                Icons.more_vert,
-                size: 24.0,
-              ),
-            ),
           ],
         ),
       ),
@@ -106,7 +103,8 @@ class _Description extends StatelessWidget {
 
 class RoutesList extends StatefulWidget {
   final List<Map<String, dynamic>> data;
-  const RoutesList(this.data, {super.key});
+  final Function onDelete;
+  const RoutesList(this.data, this.onDelete, {super.key});
 
   @override
   State<RoutesList> createState() => _RoutesList();
@@ -121,61 +119,12 @@ class _RoutesList extends State<RoutesList> {
       itemCount: widget.data.length,
       itemBuilder: (BuildContext context, int index) {
         return CustomListItem(
+          onDelete: widget.onDelete,
           thumbnail: widget.data[index]['image'],
           title: widget.data[index]['name'],
           subtitle: widget.data[index]['description'],
         );
       },
-    );
-  }
-}
-
-class MyRoutes extends StatefulWidget {
-  const MyRoutes({Key? key}) : super(key: key);
-
-  @override
-  State<MyRoutes> createState() => _MyRoutes();
-}
-
-class _MyRoutes extends State<MyRoutes> {
-  List<Map<String, dynamic>> data = [];
-  getRouteList() {
-    CollectionReference ref = FirebaseFirestore.instance.collection('routes');
-    ref.get().then((QuerySnapshot querySnapshot) {
-      print("[INFO] Getting the routes...");
-      for (var doc in querySnapshot.docs) {
-        final path = 'tour_cover_images/${doc.get('imagePath')}';
-        final ref = FirebaseStorage.instance.ref().child(path);
-
-        ref.getData().then((value) {
-          data.add({
-            "name": doc.get('name'),
-            "description": doc.get('description'),
-            "image": Image.memory(value!),
-          });
-          setState(() => data = data);
-        });
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getRouteList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: RoutesList(data),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text('Add new route'),
-        icon: const Icon(Icons.add),
-        backgroundColor: Colors.green,
-      ),
     );
   }
 }
