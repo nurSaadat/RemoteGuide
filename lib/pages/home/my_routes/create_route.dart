@@ -22,6 +22,7 @@ class _CreateRouteState extends State<CreateRoute> {
   String description = "";
   String imagePath = "";
   bool imageUploaded = true;
+  bool dateSet = true;
 
   String getFrom() {
     if (dateRange == null) {
@@ -152,6 +153,10 @@ class _CreateRouteState extends State<CreateRoute> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12,16,12,4),
+              child: !dateSet ? const Text("Set tour dates", style: TextStyle(color: Colors.red),) : null,
+            ),
           ],),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -161,17 +166,25 @@ class _CreateRouteState extends State<CreateRoute> {
             if (imageUploaded && imagePath.isEmpty) {
               setState(() => imageUploaded = false);
             } else {
-              final ref = FirebaseFirestore.instance;
-              ref.collection('routes').doc(name).set({
-                "name": name,
-                "description": description,
-                "imagePath": basename(imagePath),
-              // go back to the previous page
-              });
-              uploadFile();
-              print("[INFO] Route is being created...");
-              // go back to the previous page
-              Navigator.pop(context);
+              if (dateRange != null && dateSet) {
+                final ref = FirebaseFirestore.instance;
+                ref.collection('routes').doc(name).set({
+                  "name": name,
+                  "description": description,
+                  "imagePath": basename(imagePath),
+                  "startDate": dateRange?.start,
+                  "endDate": dateRange?.end,
+                  // go back to the previous page
+                });
+                uploadFile();
+                print("[INFO] Route is being created...");
+                // go back to the previous page
+                Navigator.pop(context);
+              } else {
+                setState(() {
+                  dateSet = false;
+                });
+              }
             }
           }
         },
@@ -198,6 +211,9 @@ class _CreateRouteState extends State<CreateRoute> {
 
     if (newDateRange == null) return;
 
-    setState(() => dateRange = newDateRange );
+    setState(() {
+      dateRange = newDateRange;
+      dateSet = true;
+    });
   }
 }
