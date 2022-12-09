@@ -21,7 +21,8 @@ class _CreateRouteState extends State<CreateRoute> {
   String name = "";
   String description = "";
   String imagePath = "";
-  bool loading = false;
+  bool imageUploaded = true;
+  bool dateSet = true;
 
   String getFrom() {
     if (dateRange == null) {
@@ -114,11 +115,12 @@ class _CreateRouteState extends State<CreateRoute> {
                 child: const Text('Add image'),
                 onPressed: () {
                   _getFromGallery();
+                  setState(() => imageUploaded = true);
                 }
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(12,12,12,8),
-              child: imagePath.isEmpty ? const Text("No image") : Image.file(
+              child: imagePath.isEmpty || !imageUploaded ? (!imageUploaded ? const Text("Upload an image", style: TextStyle(color: Colors.red)) : null) : Image.file(
                 File(imagePath),
                 fit: BoxFit.fitHeight,
                 height: 400,
@@ -151,23 +153,40 @@ class _CreateRouteState extends State<CreateRoute> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12,16,12,4),
+              child: !dateSet ? const Text("Set tour dates", style: TextStyle(color: Colors.red),) : null,
+            ),
           ],),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            final ref = FirebaseFirestore.instance;
-            ref.collection('routes').doc(name).set({
-              "name": name,
-              "description": description,
-              "imagePath": basename(imagePath),
-            });
+            if (imageUploaded && imagePath.isEmpty) {
+              setState(() => imageUploaded = false);
+            } else {
+              if (dateRange != null && dateSet) {
+                final ref = FirebaseFirestore.instance;
+                ref.collection('routes').doc(name).set({
+                  "name": name,
+                  "description": description,
+                  "imagePath": basename(imagePath),
+                  "startDate": dateRange?.start,
+                  "endDate": dateRange?.end,
+                  // go back to the previous page
+                });
+                uploadFile();
+                print("[INFO] Route is being created...");
+                // go back to the previous page
+                Navigator.pop(context);
+              } else {
+                setState(() {
+                  dateSet = false;
+                });
+              }
+            }
           }
-          uploadFile();
-          print("[INFO] Route is being created...");
-          // go back to the previous page
-          Navigator.pop(context);
         },
         label: const Text('Go to the map'),
         backgroundColor: Colors.green,
@@ -192,6 +211,9 @@ class _CreateRouteState extends State<CreateRoute> {
 
     if (newDateRange == null) return;
 
-    setState(() => dateRange = newDateRange );
+    setState(() {
+      dateRange = newDateRange;
+      dateSet = true;
+    });
   }
 }
