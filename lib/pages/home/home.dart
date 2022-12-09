@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:remote_guide_firebase/pages/home/profile_page.dart';
 import 'package:remote_guide_firebase/pages/home/upcoming.dart';
 import 'package:remote_guide_firebase/services/auth.dart';
 import 'package:remote_guide_firebase/services/database.dart';
 import 'package:remote_guide_firebase/pages/home/my_routes/my_routes.dart';
-import 'my_routes/create_route.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _Home extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     MyRoutes(),
     UpcomingTours(),
-    CreateRoute(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
