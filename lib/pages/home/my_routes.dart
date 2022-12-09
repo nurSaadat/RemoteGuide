@@ -1,18 +1,20 @@
 import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CustomListItem extends StatelessWidget {
   const CustomListItem({
     Key? key,
-    // required this.thumbnail,
+    required this.thumbnail,
     required this.title,
     required this.subtitle,
   }) : super(key: key);
 
-  // final Widget thumbnail;
+  final Widget thumbnail;
   final String title;
   final String subtitle;
 
@@ -26,10 +28,10 @@ class CustomListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            // Expanded(
-            //   flex: 2,
-            //   child: thumbnail,
-            // ),
+            Expanded(
+              flex: 2,
+              child: thumbnail,
+            ),
             Expanded(
               flex: 3,
               child: _Description(
@@ -102,17 +104,6 @@ class _Description extends StatelessWidget {
   }
 }
 
-class Tour {
-  final String name;
-  final String email;
-
-  Tour(this.name, this.email);
-
-  Tour.fromJson(Map<String, dynamic> json)
-      : name = json['title'],
-        email = json['subtitle'];
-}
-
 class RoutesList extends StatefulWidget {
   final List<Map<String, dynamic>> data;
   const RoutesList(this.data, {super.key});
@@ -122,19 +113,6 @@ class RoutesList extends StatefulWidget {
 }
 
 class _RoutesList extends State<RoutesList> {
-  // static final List<Map<String, dynamic>> data = [
-  //   {
-  //     'title': 'ABC',
-  //     'subtitle': 'abc',
-  //     'thumbnail': Colors.blue,
-  //   },
-  //   {
-  //     'title': 'DFE',
-  //     'subtitle': 'dfe',
-  //     'thumbnail': Colors.green,
-  //   },
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -143,9 +121,7 @@ class _RoutesList extends State<RoutesList> {
       itemCount: widget.data.length,
       itemBuilder: (BuildContext context, int index) {
         return CustomListItem(
-          // thumbnail: Container(
-          //   decoration: BoxDecoration(color: data[index]['image']),
-          // ),
+          thumbnail: widget.data[index]['image'],
           title: widget.data[index]['name'],
           subtitle: widget.data[index]['description'],
         );
@@ -165,28 +141,24 @@ class _MyRoutes extends State<MyRoutes> {
   List<Map<String, dynamic>> data = [];
   getRouteList() {
     CollectionReference ref = FirebaseFirestore.instance.collection('routes');
-    ref
-        .get()
-        .then((QuerySnapshot querySnapshot) async {
+    ref.get().then((QuerySnapshot querySnapshot) {
       print("[INFO] Getting the routes...");
       for (var doc in querySnapshot.docs) {
-        // final path = 'tour_cover_images/${doc.get('imagePath')}';
-        // final ref = FirebaseStorage.instance.ref().child(path);
-        // final Uint8List? image = await ref.getData();
-        data.add({
-          "name": doc.get('name'),
-          "description": doc.get('description'),
-          // "image": image,
+        final path = 'tour_cover_images/${doc.get('imagePath')}';
+        final ref = FirebaseStorage.instance.ref().child(path);
+
+        ref.getData().then((value) {
+          data.add({
+            "name": doc.get('name'),
+            "description": doc.get('description'),
+            "image": Image.memory(value!),
+          });
+          setState(() => data = data);
         });
-        setState(() => data = data);
       }
     });
   }
-  // @override
-  // void setState(VoidCallback fn) {
-  //   super.setState(fn);
-  //
-  // }
+
   @override
   void initState() {
     super.initState();
