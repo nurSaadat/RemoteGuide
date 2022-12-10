@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
+import 'package:remote_guide_firebase/pages/home/locating.dart';
 
 import '../../../shared/filled_text_button.dart';
 
@@ -179,7 +180,8 @@ class _CreateRouteState extends State<CreateRoute> {
                 uploadFile();
                 print("[INFO] Route is being created...");
                 // go back to the previous page
-                Navigator.pop(context);
+                // Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const Locating()));
               } else {
                 setState(() {
                   dateSet = false;
