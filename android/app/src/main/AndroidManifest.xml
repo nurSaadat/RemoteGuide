@@ -4,6 +4,8 @@
         android:label="remote_guide_firebase"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyA9H9h7h9lPtub0088rYy-3H6rgO0v65QI"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
