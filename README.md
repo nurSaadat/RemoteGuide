@@ -1,16 +1,8 @@
-# remote_guide_firebase
+# Remote Guide
 
-A new Flutter project.
+More and more people face the problem of the inconvenience of offline guided tours nowadays. From the point of view of tourists there are problems of crowdedness, poor ability to hear the performance, impossibility to stay at one spot for a long time for making pictures or for the rest. At the same time some people encounter such challenges as incapacity to join the metier as guides due to disabilities or other issues.
+The solution to this problem is to provide online service which will be available in any corner of the globe.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
