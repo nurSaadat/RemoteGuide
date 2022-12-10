@@ -8,7 +8,8 @@ import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
 
 class Locating extends StatefulWidget {
-  const Locating({Key? key}) : super(key: key);
+  final Function _sendTourStopsToDatabase;
+  const Locating(this._sendTourStopsToDatabase, {Key? key}) : super(key: key);
 
   @override
   State<Locating> createState() => _Locating();
@@ -25,6 +26,7 @@ class _Locating extends State<Locating> {
   Set<Marker> markerList = {};
   final Mode _mode = Mode.fullscreen;
   late GoogleMapController googleMapController;
+  var tourStops = [];
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -49,6 +51,21 @@ class _Locating extends State<Locating> {
             markers: markerList,
           ),
           ElevatedButton(onPressed: _handlePressButton, child: const Text("Search places")),
+          Positioned(
+            top: 0,
+            left: 100,
+            height: 30,
+            width: 100,
+            child:
+            ElevatedButton(
+                onPressed: () {
+                  widget._sendTourStopsToDatabase(tourStops);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: const Text("Finish adding stops", style: TextStyle(color: Colors.redAccent),)
+            )
+          )
         ],
       )
     );
@@ -96,9 +113,8 @@ class _Locating extends State<Locating> {
               borderRadius: BorderRadius.circular(20),
               borderSide: const BorderSide(color: Colors.white))
       ),
-      components: [Component(Component.country, "pk")]
+      components: []
     );
-    print("[INFO]: p in handle press button $p");
     displayPredictions(p!);
   }
 
@@ -107,15 +123,11 @@ class _Locating extends State<Locating> {
         apiKey: kGoogleApiKey,
         apiHeaders: await const GoogleApiHeaders().getHeaders()
     );
-
-    print("[INFO]: p in function $p, ${p.placeId}");
     
     PlacesDetailsResponse detail = await places.getDetailsByPlaceId(p.placeId!);
 
     final lat = detail.result.geometry?.location.lat;
     final lng = detail.result.geometry?.location.lng;
-
-    print("[INFO]: Lat and Lng $lat, $lng");
 
     markerList.clear();
     markerList.add(Marker(
@@ -123,6 +135,9 @@ class _Locating extends State<Locating> {
       position: LatLng(lat!, lng!),
       infoWindow: InfoWindow(title: detail.result.name)
     ));
+
+    tourStops.add(detail.result.placeId);
+    print("[INFO] tour stop updated $tourStops");
 
     googleMapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.0));
   }

@@ -21,7 +21,7 @@ class _Home extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     MyRoutes(),
     UpcomingTours(),
-    Locating()
+    ProfilePage()
   ];
 
   void _onItemTapped(int index) {
