@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -168,6 +169,7 @@ class _CreateRouteState extends State<CreateRoute> {
               setState(() => imageUploaded = false);
             } else {
               if (dateRange != null && dateSet) {
+                final FirebaseAuth auth = FirebaseAuth.instance;
                 final ref = FirebaseFirestore.instance;
                 ref.collection('routes').doc(name).set({
                   "name": name,
@@ -175,7 +177,7 @@ class _CreateRouteState extends State<CreateRoute> {
                   "imagePath": basename(imagePath),
                   "startDate": dateRange?.start,
                   "endDate": dateRange?.end,
-                  "guideId": "Saadat Nursultan"
+                  "guideId": auth.currentUser?.email,
                   // go back to the previous page
                 });
                 uploadFile();
