@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
-import 'package:remote_guide_firebase/pages/home/my_routes/locating.dart';
+import 'package:remote_guide_firebase/pages/home_guide/my_routes/locating.dart';
 
 import '../../../shared/filled_text_button.dart';
 
