@@ -175,6 +175,7 @@ class _CreateRouteState extends State<CreateRoute> {
                   "imagePath": basename(imagePath),
                   "startDate": dateRange?.start,
                   "endDate": dateRange?.end,
+                  "guideId": "Saadat Nursultan"
                   // go back to the previous page
                 });
                 uploadFile();
