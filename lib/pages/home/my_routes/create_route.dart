@@ -181,7 +181,7 @@ class _CreateRouteState extends State<CreateRoute> {
                 print("[INFO] Route is being created...");
                 // go back to the previous page
                 // Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Locating()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Locating(_sendTourStopsToDatabase)));
               } else {
                 setState(() {
                   dateSet = false;
@@ -217,5 +217,15 @@ class _CreateRouteState extends State<CreateRoute> {
       dateRange = newDateRange;
       dateSet = true;
     });
+  }
+
+  Future<void> _sendTourStopsToDatabase(var stopsList) async {
+    final ref = FirebaseFirestore.instance;
+    ref.collection('tourStops')
+        .doc(name)
+        .set({
+          "name": name,
+          "stopsList": stopsList,
+        });
   }
 }
