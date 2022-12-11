@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remote_guide_firebase/pages/home/my_routes/locating.dart';
 import 'package:remote_guide_firebase/pages/home/profile_page.dart';
-import 'package:remote_guide_firebase/pages/home/upcoming.dart';
+import 'package:remote_guide_firebase/pages/home/upcoming/upcoming.dart';
 import 'package:remote_guide_firebase/services/auth.dart';
 import 'package:remote_guide_firebase/services/database.dart';
 import 'package:remote_guide_firebase/pages/home/my_routes/my_routes.dart';
