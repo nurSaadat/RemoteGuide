@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:remote_guide_firebase/pages/home/locating.dart';
+import 'package:remote_guide_firebase/pages/home/my_routes/locating.dart';
 import 'package:remote_guide_firebase/pages/home/profile_page.dart';
 import 'package:remote_guide_firebase/pages/home/upcoming.dart';
 import 'package:remote_guide_firebase/services/auth.dart';
