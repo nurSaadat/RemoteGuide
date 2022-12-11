@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remote_guide_firebase/pages/authenticate/authenticate.dart';
-import 'home/home.dart';
+import 'home_guide/home.dart';
 import 'models/myuser.dart';
 
 class Wrapper extends StatelessWidget {
@@ -13,7 +13,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const Authenticate();
     } else {
-      return Home();
+      return const Home();
     }
   }
 }
