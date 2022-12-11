@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+import 'my_routes/routes_list.dart';
 
 class UpcomingTours extends StatefulWidget {
   const UpcomingTours({Key? key}) : super(key: key);
@@ -9,56 +12,48 @@ class UpcomingTours extends StatefulWidget {
 }
 
 class _UpcomingTours extends State<UpcomingTours> {
-  String name = "";
+  List<Map<String, dynamic>> data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getRouteList();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body:
-      Center(child:
-        Column(children: [
-          Text(name),
-          ElevatedButton(
-            onPressed: () {
-              CollectionReference ref = FirebaseFirestore.instance.collection('routes');
-              ref.doc('my_doc').set({
-                "name": "Rome",
-                "date_start": "12/11/2022"
-              });
-            }, child: const Text("Create")),
-          ElevatedButton(
-              onPressed: () {
-                CollectionReference ref = FirebaseFirestore.instance.collection('routes');
-                ref.doc('my_doc').get().then((DocumentSnapshot snap) {
-                  if (snap.exists) {
-                    setState(() {
-                      name = snap.get('name');
-                    });
-                  } else {
-                    print('ERROR: no item with the given ID');
-                  }
-               });
-              },
-  child: const Text("Read")
-          ),
-          ElevatedButton(
-              onPressed: () {
-                CollectionReference ref = FirebaseFirestore.instance.collection('routes');
-                ref.doc('my_doc').update({
-                  'name': 'Padua',
-                });
-              }, child: const Text("Update")
-          ),
-          ElevatedButton(
-              onPressed: () {
-                CollectionReference ref = FirebaseFirestore.instance.collection('routes');
-                ref.doc('my_doc').delete();
-              }, child: const Text("Delete")
-          ),
-          ])
-      )
+      body: RoutesList(data, deleteRoute),
     );
+  }
 
+  getRouteList() {
+    CollectionReference ref = FirebaseFirestore.instance.collection('bookings');
+    DateTime now = DateTime.now();
+    ref.where("endDate", isGreaterThanOrEqualTo: DateTime(now.year, now.month, now.day))
+        .get().then((QuerySnapshot querySnapshot) {
+          for (var doc in querySnapshot.docs) {
+            final path = 'tour_cover_images/${doc.get('imagePath')}';
+            final ref = FirebaseStorage.instance.ref().child(path);
+
+            ref.getData().then((value) {
+              data.add({
+                "name": doc.get('name'),
+                "description": doc.get('description'),
+                "image": Image.memory(value!),
+              });
+              // update the state of the widget to see changes in the UI
+              setState(() => data = data);
+            });
+      }
+    });
+  }
+
+  deleteRoute(String title) {
+    CollectionReference ref = FirebaseFirestore.instance.collection('bookings');
+    ref.doc(title).delete();
+    setState(() {
+      data.removeWhere((element) => element["name"] == title);
+    });
   }
 }
