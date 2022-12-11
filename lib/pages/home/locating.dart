@@ -19,10 +19,7 @@ const kGoogleApiKey = "AIzaSyAZx3e0C2EULlN-xGVRJFBS78JI9esJs04";
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _Locating extends State<Locating> {
-  // late LatLng currentLatLng = const LatLng(48, 2);
-  // final Completer<GoogleMapController> _controller = Completer();
-  // bool showError = false;
-
+  late LatLng currentLatLng = const LatLng(48, 2);
   Set<Marker> markerList = {};
   final Mode _mode = Mode.fullscreen;
   late GoogleMapController googleMapController;
@@ -50,59 +47,52 @@ class _Locating extends State<Locating> {
             },
             markers: markerList,
           ),
-          ElevatedButton(onPressed: _handlePressButton, child: const Text("Search places")),
-          Positioned(
-            top: 0,
-            left: 100,
-            height: 30,
-            width: 100,
-            child:
-            ElevatedButton(
+          Align(
+              alignment: AlignmentDirectional.topStart,
+              child:
+              ElevatedButton(
                 onPressed: () {
                   widget._sendTourStopsToDatabase(tourStops);
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: const Text("Finish adding stops", style: TextStyle(color: Colors.redAccent),)
+                style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.redAccent)),
+                child: const Text("Finish adding stops"),
+              )
+          ),
+          Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: ElevatedButton(
+                onPressed: _findPlaces,
+                child: const Text("Search places")
+            ),
+          ),
+          Align(
+            alignment: AlignmentDirectional.topEnd,
+            child: Padding(
+                padding: const EdgeInsets.fromLTRB(0,16,16,0),
+                child: Text("${tourStops.length} places added")
             )
           )
         ],
       )
     );
   }
-  //     body: GoogleMap(
-  //       mapType: MapType.normal,
-  //       initialCameraPosition: _kGooglePlex,
-  //       onMapCreated: (GoogleMapController controller) {
-  //         _controller.complete(controller);
-  //       },
-  //     ),
-  //     floatingActionButton: FloatingActionButton.extended(
-  //       onPressed: _determinePosition,
-  //       label: const Text('Go to current location'),
-  //       icon: const Icon(Icons.pin_drop),
-  //     ),
-  //   );
-  // }
-  //
+
   // Future<void> _determinePosition() async {
   //   Position position = await Geolocator.getCurrentPosition();
   //   setState(() {
   //     currentLatLng = LatLng(position.latitude, position.longitude);
   //   });
   //
-  //   late CameraPosition currentPosition = CameraPosition(
-  //       target: currentLatLng!,
-  //       zoom: 14);
-  //   final GoogleMapController controller = await _controller.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(currentPosition));
+  //   googleMapController.animateCamera(CameraUpdate.newLatLngZoom(currentLatLng, 14.0));
   // }
 
-  Future<void> _handlePressButton() async {
+  Future<void> _findPlaces() async {
     Prediction? p = await PlacesAutocomplete.show(
       context: context,
       apiKey: kGoogleApiKey,
-      onError: (PlacesAutocompleteResponse response) => print("[ERROOOR] ${response.errorMessage}"),
+      onError: (PlacesAutocompleteResponse response) => print("[ERROR] ${response.errorMessage}"),
       mode: _mode,
       language: 'en',
       strictbounds: false,
@@ -137,8 +127,9 @@ class _Locating extends State<Locating> {
     ));
 
     tourStops.add(detail.result.placeId);
-    print("[INFO] tour stop updated $tourStops");
-
+    setState(() {
+      tourStops = tourStops;
+    });
     googleMapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.0));
   }
 }
