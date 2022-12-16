@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:remote_guide_firebase/pages/authenticate/register.dart';
 import 'package:remote_guide_firebase/pages/models/myuser.dart';
-import 'package:remote_guide_firebase/services/database2.dart';
+
+import 'database.dart';
 
 class AuthService {
 
@@ -44,7 +44,7 @@ class AuthService {
   }
 
   // sign up with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, bool guide, String name) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
@@ -53,7 +53,7 @@ class AuthService {
       print(newEmail);
 
       // create a new document for the new user
-      //await DatabaseService().updateUserData(newEmail!, 'new name', 'client');
+      await DatabaseService().updateUserData(newEmail!, name, guide);
       //return _userFromFirebaseUser(user);
     } catch(e){
       print(e.toString());
