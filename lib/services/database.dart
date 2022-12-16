@@ -1,18 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
-
-  final String? uid;
-  DatabaseService({this.uid});
-
   // collection reference
-  final CollectionReference userCollection = FirebaseFirestore.instance.collection('roles');
+  final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
-  Future updateUserData(String username, String name, String role) async {
-    return await userCollection.doc(uid).set({
-      'username': username,
+  Future updateUserData(String email, String name, bool guide) async {
+    return await userCollection.doc(email).set({
       'name': name,
-      'role': role,
+      'guide': guide,
     });
   }
 
