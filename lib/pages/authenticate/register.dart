@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remote_guide_firebase/shared/constants.dart';
-
 import '../../services/auth.dart';
 import '../../shared/loading.dart';
 
@@ -127,7 +125,7 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()){
                             setState(() => loading = true);
-                            dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                            dynamic result = await _auth.registerWithEmailAndPassword(email, password, guide, name);
                             if(result == null){
                               setState(() {
                                 error = 'You are entering not valid credentials';
