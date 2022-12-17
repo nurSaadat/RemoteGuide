@@ -18,7 +18,6 @@ class _RegisterState extends State<Register> {
 
   bool guide = false;
   String email = '';
-  String username = '';
   String name = '';
   String password = '';
   String repeatedPassword = '';
@@ -52,16 +51,6 @@ class _RegisterState extends State<Register> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 20.0),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Username',
-                      ),
-                      validator: (val) => val!.isEmpty ? 'Enter the username' : null,
-                      onChanged: (val) {
-                        setState(() => username = val);
-                      },
-                    ),
                     const SizedBox(height: 20.0),
                     TextFormField(
                       decoration: const InputDecoration(
