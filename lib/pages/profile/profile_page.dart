@@ -73,7 +73,7 @@ class _ProfilePage extends State<ProfilePage> {
     CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
     userCollection.doc(_email).get().then((value) {
       _name = value.get('name');
-      _status = value.get('guide');
+      _status = value.get('guide').toString();
     });
 
     Reference firebaseStorage = FirebaseStorage.instance.ref();

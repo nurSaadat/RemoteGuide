@@ -5,7 +5,7 @@ import '../../shared/loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
-  SignIn({required this.toggleView});
+  const SignIn({super.key, required this.toggleView});
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -24,7 +24,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
+    return loading ? const Loading() : Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
@@ -44,12 +44,12 @@ class _SignInState extends State<SignIn> {
         ],
       ),
       body: Container (
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
             key: _formKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 decoration: const InputDecoration(
                     icon: Icon(Icons.person),
@@ -60,7 +60,7 @@ class _SignInState extends State<SignIn> {
                   setState(() => email = val);
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 decoration: const InputDecoration(
                   icon: Icon(Icons.password),
@@ -72,7 +72,7 @@ class _SignInState extends State<SignIn> {
                   setState(() => password = val);
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                   style: ButtonStyle(
                       textStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white)),
@@ -90,10 +90,10 @@ class _SignInState extends State<SignIn> {
                     }
                   },
                   child: const Text('Sign in')),
-              SizedBox(height: 12.0),
+              const SizedBox(height: 12.0),
               Text(
                 error,
-                style: TextStyle(color: Colors.red, fontSize: 14.0),
+                style: const TextStyle(color: Colors.red, fontSize: 14.0),
               )
             ],
           )
