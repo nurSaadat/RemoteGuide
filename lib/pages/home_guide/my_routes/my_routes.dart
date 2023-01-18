@@ -15,6 +15,31 @@ class MyRoutes extends StatefulWidget {
 class _MyRoutes extends State<MyRoutes> {
   List<Map<String, dynamic>> data = [];
 
+  @override
+  void initState() {
+    super.initState();
+    getRouteList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RoutesList(data, deleteRoute),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text('Add new route'),
+        icon: const Icon(Icons.add),
+        backgroundColor: Colors.green,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateRoute()),
+          );
+        },
+      ),
+    );
+  }
+
   deleteRoute(String title) {
     CollectionReference ref = FirebaseFirestore.instance.collection('routes');
     ref.doc(title).delete();
@@ -42,30 +67,5 @@ class _MyRoutes extends State<MyRoutes> {
         });
       }
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getRouteList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: RoutesList(data, deleteRoute),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Text('Add new route'),
-        icon: const Icon(Icons.add),
-        backgroundColor: Colors.green,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CreateRoute()),
-          );
-        },
-      ),
-    );
   }
 }

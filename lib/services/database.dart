@@ -11,6 +11,19 @@ class DatabaseService {
     });
   }
 
+  Future getUserType(String? email) async {
+    return await userCollection
+        .doc(email)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            return(documentSnapshot.data());
+          } else {
+            return(null);
+          }
+        });
+  }
+
   // get collection stream
   Stream<QuerySnapshot> get users {
     return userCollection.snapshots();
