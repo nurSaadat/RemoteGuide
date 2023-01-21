@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remote_guide_firebase/pages/home_guide/my_routes/locating.dart';
+import 'package:remote_guide_firebase/pages/profile/profile.dart';
 import 'package:remote_guide_firebase/pages/profile/profile_page.dart';
 import 'package:remote_guide_firebase/pages/home_guide/upcoming/upcoming.dart';
 import 'package:remote_guide_firebase/services/auth.dart';
 import 'package:remote_guide_firebase/services/database.dart';
 import 'package:remote_guide_firebase/pages/home_guide/my_routes/my_routes.dart';
+
+import '../models/myuser.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,14 +18,24 @@ class Home extends StatefulWidget {
   State<Home> createState() => _Home();
 }
 class _Home extends State<Home> {
+  late List<Widget> _widgetOptions = <Widget>[
+    MyRoutes(),
+    UpcomingTours(),
+    Profile()
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, ()
+    {
+      _widgetOptions = fetchUserData();
+    });
+  }
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    MyRoutes(),
-    UpcomingTours(),
-    ProfilePage()
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -81,4 +94,25 @@ class _Home extends State<Home> {
     )
     );
   }
+
+List<Widget> fetchUserData() {
+    final user = Provider.of<MyUser?>(context);
+
+    // print(user);
+
+    if (user?.isGuide == true) {
+      return <Widget>[
+        MyRoutes(),
+        UpcomingTours(),
+        ProfilePage()
+      ];
+    } else {
+      return <Widget>[
+        UpcomingTours(),
+        MyRoutes(),
+        ProfilePage()
+      ];
+    }
+  }
+
 }

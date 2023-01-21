@@ -56,6 +56,8 @@ class _MyRoutes extends State<MyRoutes> {
         final path = 'tour_cover_images/${doc.get('imagePath')}';
         final ref = FirebaseStorage.instance.ref().child(path);
 
+      // .where("date", isGreaterThanOrEqualTo: DateTime(now.year, now.month, now.day))
+
         ref.getData().then((value) {
           data.add({
             "name": doc.get('name'),
