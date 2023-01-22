@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:remote_guide_firebase/pages/models/myuser.dart';
 
@@ -37,6 +38,7 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       print(await DatabaseService().getUserType(user?.email));
+
       return _userFromFirebaseUser(user);
     } catch(e){
       print(e.toString());
