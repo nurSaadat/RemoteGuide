@@ -106,8 +106,8 @@ class _Description extends StatelessWidget {
 
 class BookingsList extends StatefulWidget {
   final List<Map<String, dynamic>> data;
-  final Function onCancel;
-  const BookingsList(this.data, this.onCancel, {super.key});
+  final Function? onCancel;
+  const BookingsList({Key? key, required this.data, this.onCancel}) : super(key:key);
 
   @override
   State<BookingsList> createState() => _BookingsList();
@@ -124,7 +124,7 @@ class _BookingsList extends State<BookingsList> {
         return CustomListItem(
           title: widget.data[index]['name'],
           clientName: widget.data[index]['clientId'],
-          onCancel: () {widget.onCancel();},
+          onCancel: widget.onCancel!(),
         );
       },
     );

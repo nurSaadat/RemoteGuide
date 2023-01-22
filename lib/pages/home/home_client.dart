@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remote_guide_firebase/pages/home/profile/profile.dart';
-import 'package:remote_guide_firebase/pages/home/bookings/upcoming.dart';
+import 'package:remote_guide_firebase/pages/home/bookings/upcoming_booking.dart';
 import 'routes/client_routes.dart';
 
 class HomeClient extends StatefulWidget {
@@ -14,7 +14,7 @@ class HomeClient extends StatefulWidget {
 class _HomeClientState extends State<HomeClient> {
   late final List<Widget> _widgetOptions = <Widget>[
     const RoutesToChooseFrom(),
-    const UpcomingTours(),
+    const UpcomingBookings(),
     const Profile()
   ];
 
