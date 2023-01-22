@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:remote_guide_firebase/pages/home_guide/my_routes/create_route.dart';
-import 'package:remote_guide_firebase/pages/home_guide/my_routes/routes_list.dart';
+import 'package:remote_guide_firebase/pages/home/my_routes/create_route.dart';
+import 'package:remote_guide_firebase/pages/home/my_routes/routes_list.dart';
 
 
 class MyRoutes extends StatefulWidget {
