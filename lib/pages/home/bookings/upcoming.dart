@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:remote_guide_firebase/pages/home/upcoming/bookings_list.dart';
+import 'package:remote_guide_firebase/pages/home/bookings/bookings_list.dart';
 
-import '../my_routes/routes_list.dart';
+import '../routes/routes_list.dart';
 
 class UpcomingTours extends StatefulWidget {
   const UpcomingTours({Key? key}) : super(key: key);
