@@ -31,27 +31,17 @@ class _ProfileImageState extends State<ProfileImage> {
         future: _data,
         builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Text(snapshot.data.toString());
-              // CircleAvatar(backgroundImage: NetworkImage(snapshot.data.toString()), radius: 50,);
-          //   // change profile photo link
-          //   InkWell(
-          //       child: const Text('Change profile photo'),
-          //       onTap: () => launchUrlString('https://docs.flutter.io/flutter/services/UrlLauncher-class.html')
-          //   ),
-          }
-          else {
+            return
+              CircleAvatar(backgroundImage: NetworkImage(snapshot.data.toString()), radius: 50,);
+            // change profile photo link
+            // InkWell(
+            //     child: const Text('Change profile photo'),
+            //     onTap: () => launchUrlString('https://docs.flutter.io/flutter/services/UrlLauncher-class.html')
+            // ),
+          } else {
             return const CircularProgressIndicator();
           }
         }
     );
-    //   (
-    //   children: [
-    //     _profileImageUrl.isNotEmpty ? CircleAvatar(backgroundImage: NetworkImage(_profileImageUrl), radius: 50,) : Text("Haha, no luck"),
-    //   // change profile photo link
-    //   InkWell(
-    //       child: const Text('Change profile photo'),
-    //       onTap: () => launchUrlString('https://docs.flutter.io/flutter/services/UrlLauncher-class.html')
-    //   ),
-    // ]);
   }
 }
