@@ -51,7 +51,6 @@ class _MyRoutes extends State<MyRoutes> {
   getRouteList() {
     CollectionReference ref = FirebaseFirestore.instance.collection('routes');
     ref.get().then((QuerySnapshot querySnapshot) {
-      print("[INFO] Getting the routes...");
       for (var doc in querySnapshot.docs) {
         final path = 'tour_cover_images/${doc.get('imagePath')}';
         final ref = FirebaseStorage.instance.ref().child(path);

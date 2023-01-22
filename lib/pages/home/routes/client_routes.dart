@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:remote_guide_firebase/pages/home/bookings/create_booking.dart';
 import 'package:remote_guide_firebase/pages/home/routes/routes_list.dart';
 
 
@@ -23,17 +24,17 @@ class _RoutesToChooseFrom extends State<RoutesToChooseFrom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RoutesList(data: data, operationsList: ["Reserve"], onReserve: () => {print("[INFO] IMPLEMENT RESERVING")},),
+      body: RoutesList(
+        data: data,
+        operationsList: const ["Reserve"],
+        onReserve: (String title) {
+          print("[INFO] IMPLEMENT RESERVING");
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBooking(tourId: title)));
+        },
+      ),
     );
   }
 
-  deleteRoute(String title) {
-    CollectionReference ref = FirebaseFirestore.instance.collection('routes');
-    ref.doc(title).delete();
-    setState(() {
-      data.removeWhere((element) => element["name"] == title);
-    });
-  }
 
   getRouteList() {
     CollectionReference ref = FirebaseFirestore.instance.collection('routes');
@@ -41,7 +42,6 @@ class _RoutesToChooseFrom extends State<RoutesToChooseFrom> {
 
     ref.where("endDate", isGreaterThanOrEqualTo: DateTime(now.year, now.month, now.day))
         .get().then((QuerySnapshot querySnapshot) {
-      print("[INFO] Getting the routes...");
       for (var doc in querySnapshot.docs) {
         final path = 'tour_cover_images/${doc.get('imagePath')}';
         final ref = FirebaseStorage.instance.ref().child(path);

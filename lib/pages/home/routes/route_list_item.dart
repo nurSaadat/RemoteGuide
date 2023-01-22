@@ -30,7 +30,7 @@ class RouteListItem extends StatelessWidget {
         break;
       case 'Reserve':
         print("[INFO] Reserve");
-        onReserve!();
+        onReserve!(title);
         break;
     }
   }

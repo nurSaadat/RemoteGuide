@@ -181,7 +181,6 @@ class _CreateRouteState extends State<CreateRoute> {
                   // go back to the previous page
                 });
                 uploadFile();
-                print("[INFO] Route is being created...");
                 // go back to the previous page
                 // Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Locating(_sendTourStopsToDatabase)));
