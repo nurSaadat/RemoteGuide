@@ -1,23 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:remote_guide_firebase/pages/home_guide/my_routes/locating.dart';
+import 'package:remote_guide_firebase/pages/home_guide/home_client.dart';
 import 'package:remote_guide_firebase/pages/profile/profile.dart';
-import 'package:remote_guide_firebase/pages/profile/profile_page.dart';
 import 'package:remote_guide_firebase/pages/home_guide/upcoming/upcoming.dart';
 import 'package:remote_guide_firebase/services/auth.dart';
 import 'package:remote_guide_firebase/services/database.dart';
 import 'package:remote_guide_firebase/pages/home_guide/my_routes/my_routes.dart';
 
-import '../models/myuser.dart';
+import 'home_guide.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _Home();
 }
+
+class CustomUser {
+  final name;
+  final email;
+  final guide;
+  
+  CustomUser(this.guide, this.email, this.name);
+}
+
 class _Home extends State<Home> {
+  late Future<DocumentSnapshot<Object?>?> _data;
   late List<Widget> _widgetOptions = <Widget>[
     MyRoutes(),
     UpcomingTours(),
@@ -27,10 +37,9 @@ class _Home extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, ()
-    {
-      _widgetOptions = fetchUserData();
-    });
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
+    _data = userCollection.doc(auth.currentUser?.email).get();
   }
 
   int _selectedIndex = 0;
@@ -69,50 +78,45 @@ class _Home extends State<Home> {
             )
           ],
         ),
-        body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'My routes',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: 'Upcoming',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+        body: FutureBuilder<DocumentSnapshot?>(
+            future: _data,
+            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                if (data["guide"]){
+                  return HomeGuide(snapshot.data);
+                } else {
+                  return HomeClient(snapshot.data);
+                }
+              }
+              else {
+                return const CircularProgressIndicator();
+              }
+            }
+        )
+        // Center(
+        //       child: _widgetOptions.elementAt(_selectedIndex),
+        //   ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //   items: const <BottomNavigationBarItem>[
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.list),
+        //       label: 'My routes',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.schedule),
+        //       label: 'Upcoming',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.person),
+        //       label: 'Profile',
+        //     ),
+        //   ],
+        //   currentIndex: _selectedIndex,
+        //   selectedItemColor: Colors.amber[800],
+        //   onTap: _onItemTapped,
+        // ),
     )
     );
   }
-
-List<Widget> fetchUserData() {
-    final user = Provider.of<MyUser?>(context);
-
-    // print(user);
-
-    if (user?.isGuide == true) {
-      return <Widget>[
-        MyRoutes(),
-        UpcomingTours(),
-        ProfilePage()
-      ];
-    } else {
-      return <Widget>[
-        UpcomingTours(),
-        MyRoutes(),
-        ProfilePage()
-      ];
-    }
-  }
-
 }
