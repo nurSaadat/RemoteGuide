@@ -1,19 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class CustomListItem extends StatelessWidget {
-  const CustomListItem({
-    Key? key,
-    required this.onDelete,
-    required this.thumbnail,
-    required this.title,
-    required this.subtitle,
-  }) : super(key: key);
-
-  final Function onDelete;
+class RouteListItem extends StatelessWidget {
   final Widget thumbnail;
   final String title;
   final String subtitle;
+  final List<String> operationsList;
+  final Function? onDelete;
+  final Function? onReserve;
+
+  const RouteListItem({
+    Key? key,
+    required this.thumbnail,
+    required this.title,
+    required this.subtitle,
+    required this.operationsList,
+    this.onDelete,
+    this.onReserve,
+  }) : super(key: key);
+
+
 
   void handleClick(String value) {
     switch (value) {
@@ -21,8 +26,11 @@ class CustomListItem extends StatelessWidget {
         print("[INFO] Edit");
         break;
       case 'Delete':
-        print("[INFO] Delete");
-        onDelete(title);
+        onDelete!(title);
+        break;
+      case 'Reserve':
+        print("[INFO] Reserve");
+        onReserve!(title);
         break;
     }
   }
@@ -51,7 +59,7 @@ class CustomListItem extends StatelessWidget {
             PopupMenuButton<String>(
               onSelected: handleClick,
               itemBuilder: (BuildContext context) {
-                return {'Edit', 'Delete'}.map((String choice) {
+                return operationsList.map((String choice) {
                   return PopupMenuItem<String>(
                     value: choice,
                     child: Text(choice),
@@ -97,34 +105,6 @@ class _Description extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class RoutesList extends StatefulWidget {
-  final List<Map<String, dynamic>> data;
-  final Function onDelete;
-  const RoutesList(this.data, this.onDelete, {super.key});
-
-  @override
-  State<RoutesList> createState() => _RoutesList();
-}
-
-class _RoutesList extends State<RoutesList> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(8.0),
-      itemExtent: 150.0,
-      itemCount: widget.data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return CustomListItem(
-          onDelete: widget.onDelete,
-          thumbnail: widget.data[index]['image'],
-          title: widget.data[index]['name'],
-          subtitle: widget.data[index]['description'],
-        );
-      },
     );
   }
 }

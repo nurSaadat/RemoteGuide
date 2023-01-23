@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remote_guide_firebase/pages/home/profile/profile_image.dart';
 
 class ProfileInfo extends StatefulWidget {
   final data;
@@ -15,6 +16,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
     return Scaffold(
       body: Column(
         children: [
+          const ProfileImage(),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 8.0),
             child: Row(

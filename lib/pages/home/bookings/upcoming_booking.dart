@@ -1,18 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:remote_guide_firebase/pages/home/upcoming/bookings_list.dart';
+import 'package:remote_guide_firebase/pages/home/bookings/bookings_list.dart';
 
-import '../my_routes/routes_list.dart';
-
-class UpcomingTours extends StatefulWidget {
-  const UpcomingTours({Key? key}) : super(key: key);
+class UpcomingBookings extends StatefulWidget {
+  const UpcomingBookings({Key? key}) : super(key: key);
 
   @override
-  State<UpcomingTours> createState() => _UpcomingTours();
+  State<UpcomingBookings> createState() => _UpcomingBookings();
 }
 
-class _UpcomingTours extends State<UpcomingTours> {
+class _UpcomingBookings extends State<UpcomingBookings> {
   List<Map<String, dynamic>> data = [];
 
   @override
@@ -24,7 +21,7 @@ class _UpcomingTours extends State<UpcomingTours> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BookingsList(data, cancelRoute),
+      body: BookingsList(data: data, onCancel: cancelRoute),
     );
   }
 
@@ -35,8 +32,9 @@ class _UpcomingTours extends State<UpcomingTours> {
         .get().then((QuerySnapshot querySnapshot) {
           for (var doc in querySnapshot.docs) {
             data.add({
-              "name": doc.get('name'),
+              "name": doc.get('tourName'),
               "clientId": doc.get('clientId'),
+              "guideId": doc.get('guideId'),
             });
             // update the state of the widget to see changes in the UI
             setState(() => data = data);

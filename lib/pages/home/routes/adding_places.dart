@@ -2,23 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
 
-class Locating extends StatefulWidget {
+class AddingPlaces extends StatefulWidget {
   final Function _sendTourStopsToDatabase;
-  const Locating(this._sendTourStopsToDatabase, {Key? key}) : super(key: key);
+  const AddingPlaces(this._sendTourStopsToDatabase, {Key? key}) : super(key: key);
 
   @override
-  State<Locating> createState() => _Locating();
+  State<AddingPlaces> createState() => _AddingPlaces();
 }
 
 const kGoogleApiKey = "AIzaSyAZx3e0C2EULlN-xGVRJFBS78JI9esJs04";
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
-class _Locating extends State<Locating> {
+class _AddingPlaces extends State<AddingPlaces> {
   late LatLng currentLatLng = const LatLng(48, 2);
   Set<Marker> markerList = {};
   final Mode _mode = Mode.fullscreen;
@@ -26,7 +25,7 @@ class _Locating extends State<Locating> {
   var tourStops = [];
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(45.4067382, 11.8773937),
     zoom: 14.4746,
   );
 
@@ -78,15 +77,6 @@ class _Locating extends State<Locating> {
       )
     );
   }
-
-  // Future<void> _determinePosition() async {
-  //   Position position = await Geolocator.getCurrentPosition();
-  //   setState(() {
-  //     currentLatLng = LatLng(position.latitude, position.longitude);
-  //   });
-  //
-  //   googleMapController.animateCamera(CameraUpdate.newLatLngZoom(currentLatLng, 14.0));
-  // }
 
   Future<void> _findPlaces() async {
     Prediction? p = await PlacesAutocomplete.show(
