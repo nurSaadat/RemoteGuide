@@ -28,7 +28,6 @@ class _RoutesToChooseFrom extends State<RoutesToChooseFrom> {
         data: data,
         operationsList: const ["Reserve"],
         onReserve: (String title) {
-          print("[INFO] IMPLEMENT RESERVING");
           Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBooking(tourId: title)));
         },
       ),

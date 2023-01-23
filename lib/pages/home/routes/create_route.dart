@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
-import 'package:remote_guide_firebase/pages/home/routes/locating.dart';
+import 'package:remote_guide_firebase/pages/home/routes/adding_places.dart';
 
 import '../../../shared/filled_text_button.dart';
 
@@ -183,7 +183,7 @@ class _CreateRouteState extends State<CreateRoute> {
                 uploadFile();
                 // go back to the previous page
                 // Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Locating(_sendTourStopsToDatabase)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddingPlaces(_sendTourStopsToDatabase)));
               } else {
                 setState(() {
                   dateSet = false;
