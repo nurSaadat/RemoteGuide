@@ -23,7 +23,8 @@ class _BookingsList extends State<BookingsList> {
       itemBuilder: (BuildContext context, int index) {
         return BookingListItem(
           title: widget.data[index]['name'],
-          clientName: widget.data[index]['clientId'],
+          clientId: widget.data[index]['clientId'],
+          guideId: widget.data[index]['guideId'],
           onCancel: widget.onCancel!,
         );
       },

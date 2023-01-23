@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:remote_guide_firebase/pages/home/ongoing_tour/current_location.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class BookingListItem extends StatelessWidget {
+  final Function onCancel;
+  final String title;
+  final String clientId;
+  final String guideId;
+
   const BookingListItem({
     Key? key,
     required this.onCancel,
     required this.title,
-    required this.clientName,
+    required this.clientId,
+    required this.guideId,
   }) : super(key: key);
-
-  final Function onCancel;
-  final String title;
-  final String clientName;
 
   void handleClick(String value) {
     switch (value) {
@@ -33,22 +34,22 @@ class BookingListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              flex: 1,
+              flex: 2,
               child: _Description(
                 title: title,
-                subtitle: clientName,
+                clientId: clientId,
+                guideId: guideId,
               ),
             ),
             Expanded(
                 flex: 1,
-                child: ElevatedButton.icon(
+                child: ElevatedButton(
                   onPressed: () {
                     // launchUrlString("tel://+393519262241");
                     Navigator.push(context, MaterialPageRoute(builder: (context) => CurrentLocation()));
                   },
                   style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.green)),
-                  icon: const Icon(Icons.call),
-                  label: const Text("Start the call"),
+                  child: const Text("Start the tour"),
                 )
             ),
             PopupMenuButton<String>(
@@ -73,11 +74,13 @@ class _Description extends StatelessWidget {
   const _Description({
     Key? key,
     required this.title,
-    required this.subtitle,
+    required this.clientId,
+    required this.guideId,
   }) : super(key: key);
 
   final String title;
-  final String subtitle;
+  final String clientId;
+  final String guideId;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +98,12 @@ class _Description extends StatelessWidget {
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
           Text(
-            subtitle,
+            "Client: $clientId",
+            style: const TextStyle(fontSize: 12.0),
+          ),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
+          Text(
+            "Guide: $guideId",
             style: const TextStyle(fontSize: 12.0),
           ),
         ],

@@ -34,6 +34,7 @@ class _UpcomingBookings extends State<UpcomingBookings> {
             data.add({
               "name": doc.get('tourName'),
               "clientId": doc.get('clientId'),
+              "guideId": doc.get('guideId'),
             });
             // update the state of the widget to see changes in the UI
             setState(() => data = data);
