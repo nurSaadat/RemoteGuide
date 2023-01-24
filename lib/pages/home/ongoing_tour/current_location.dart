@@ -1,12 +1,23 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:remote_guide_firebase/pages/home/ongoing_tour/video.dart';
 
 class CurrentLocation extends StatefulWidget {
-  const CurrentLocation({Key? key}) : super(key: key);
+  final String title;
+  final String clientId;
+  final String guideId;
+
+  const CurrentLocation({
+    Key? key,
+    required this.title,
+    required this.clientId,
+    required this.guideId,
+  }) : super(key: key);
 
   @override
   State<CurrentLocation> createState() => _CurrentLocation();
@@ -16,6 +27,7 @@ const kGoogleApiKey = "AIzaSyAZx3e0C2EULlN-xGVRJFBS78JI9esJs04";
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _CurrentLocation extends State<CurrentLocation> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final Mode _mode = Mode.fullscreen;
   late GoogleMapController googleMapController;
   var tourStops = [];
@@ -59,7 +71,21 @@ class _CurrentLocation extends State<CurrentLocation> {
           Align(
               alignment: AlignmentDirectional.bottomStart,
               child: ElevatedButton(
-                  onPressed: () => {print("[INFO] Video call started...")},
+                  onPressed: () {
+                    print("[INFO] Video call started...");
+                    String roomName = "${widget.title} ${widget.clientId} ${widget.guideId}";
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Video(
+                                    roomName: roomName,
+                                    subjectText: roomName,
+                                    nameText: auth.currentUser?.email ?? "User",
+                                    emailText: auth.currentUser?.email ?? "fake@email.com",
+                                    )
+                        )
+                    );},
                   style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.green)),
                   child: const Text("Call")
               ),

@@ -6,10 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 class Video extends StatefulWidget {
-  const Video({super.key});
+  final String roomName;
+  final String subjectText;
+  final String nameText;
+  final String emailText;
+
+  const Video({
+    Key? key,
+    required this.roomName,
+    required this.subjectText,
+    required this.nameText,
+    required this.emailText,
+  }) : super(key: key);
 
   @override
-  _Video createState() => _Video();
+  State<Video> createState() =>  _Video();
 }
 
 class _Video extends State<Video> {
@@ -46,7 +57,7 @@ class _Video extends State<Video> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Video call ongoing'),
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(

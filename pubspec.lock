@@ -355,9 +355,11 @@ packages:
   jitsi_meet:
     dependency: "direct main"
     description:
-      name: jitsi_meet
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: jitsi_meet
+      ref: master
+      resolved-ref: "86cfa81eed1440d3f87e837e0b8441f541f0e2ea"
+      url: "https://github.com/Eng-NUREDDIN/jitsi_meet.git"
+    source: git
     version: "4.0.0"
   jitsi_meet_platform_interface:
     dependency: transitive
