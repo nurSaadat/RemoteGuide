@@ -46,7 +46,15 @@ class BookingListItem extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     // launchUrlString("tel://+393519262241");
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CurrentLocation()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                            CurrentLocation(
+                              title: title,
+                              clientId: clientId,
+                              guideId: guideId,
+                            )
+                        )
+                    );
                   },
                   style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.green)),
                   child: const Text("Start the tour"),

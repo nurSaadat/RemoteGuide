@@ -1,11 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.remote_guide_firebase">
+    package="com.example.remote_guide_firebase"
+    xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
    <application
         android:label="remote_guide_firebase"
         android:name="${applicationName}"
+        tools:replace="android:label"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyAZx3e0C2EULlN-xGVRJFBS78JI9esJs04"/>

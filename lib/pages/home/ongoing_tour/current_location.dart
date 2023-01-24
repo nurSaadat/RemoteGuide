@@ -1,12 +1,24 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
+import 'package:remote_guide_firebase/pages/home/ongoing_tour/video.dart';
 
 class CurrentLocation extends StatefulWidget {
-  const CurrentLocation({Key? key}) : super(key: key);
+  final String title;
+  final String clientId;
+  final String guideId;
+
+  const CurrentLocation({
+    Key? key,
+    required this.title,
+    required this.clientId,
+    required this.guideId,
+  }) : super(key: key);
 
   @override
   State<CurrentLocation> createState() => _CurrentLocation();
@@ -16,6 +28,7 @@ const kGoogleApiKey = "AIzaSyAZx3e0C2EULlN-xGVRJFBS78JI9esJs04";
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _CurrentLocation extends State<CurrentLocation> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final Mode _mode = Mode.fullscreen;
   late GoogleMapController googleMapController;
   var tourStops = [];
@@ -39,53 +52,71 @@ class _CurrentLocation extends State<CurrentLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: const Text("Tour is ongoing"),
-      ),
-      body: Stack(
-        children: [
-          GoogleMap(
-            initialCameraPosition: _kGooglePlex,
-            markers: Set<Marker>.of(_markers),
-            mapType: MapType.normal,
-            myLocationEnabled: true,
-            compassEnabled: true,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-          ),
-          Align(
-              alignment: AlignmentDirectional.bottomStart,
-              child: ElevatedButton(
-                  onPressed: () => {print("[INFO] Video call started...")},
-                  style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.green)),
-                  child: const Text("Call")
-              ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.bottomCenter,
-            child: ElevatedButton(
-                onPressed: () => {print("[INFO] Find")},
-                child: const Text("Find buddies")
+    return MaterialApp(
+        home:
+          Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          title: const Text("Tour is ongoing"),
+        ),
+        body: Stack(
+          children: [
+            GoogleMap(
+              initialCameraPosition: _kGooglePlex,
+              markers: Set<Marker>.of(_markers),
+              mapType: MapType.normal,
+              myLocationEnabled: true,
+              compassEnabled: true,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
             ),
-          ),
-          Align(
-              alignment: AlignmentDirectional.bottomEnd,
-              child:
-              ElevatedButton(
-                onPressed: () {
-                  // widget._sendTourStopsToDatabase(tourStops);
-                  print("[INFO] Stopping the tour...");
-                  Navigator.pop(context);
-                },
-                style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.redAccent)),
-                child: const Text("Stop"),
-              )
-          ),
-        ],
-      )
+            Align(
+                alignment: AlignmentDirectional.bottomStart,
+                child: ElevatedButton(
+                    onPressed: () {
+                      String roomName = "${widget.title}-${DateFormat('dd-MM-yyyy').format(DateTime.now())}-${widget.clientId.split("@")[0]}";
+                      String subjectText = "Tour name: ${widget.title} \nguide ${widget.guideId} \nfor ${widget.clientId}";
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Video(
+                                      roomText: roomName,
+                                      subjectText: subjectText,
+                                      nameText: auth.currentUser?.email ?? "User",
+                                      emailText: auth.currentUser?.email ?? "fake@email.com",
+                                      )
+                          )
+                      );},
+                    style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.green)),
+                    child: const Text("Call")
+                ),
+            ),
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: ElevatedButton(
+                  onPressed: () => {print("[INFO] Find")},
+                  child: const Text("Find buddies")
+              ),
+            ),
+            Align(
+                alignment: AlignmentDirectional.bottomEnd,
+                child:
+                ElevatedButton(
+                  onPressed: () {
+                    // widget._sendTourStopsToDatabase(tourStops);
+                    print("[INFO] Stopping the tour...");
+                    Navigator.pop(context);
+                  },
+                  style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.redAccent)),
+                  child: const Text("Stop"),
+                )
+            ),
+          ],
+        )
+      ),
     );
   }
 
