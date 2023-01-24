@@ -21,7 +21,17 @@ class _UpcomingBookings extends State<UpcomingBookings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BookingsList(data: data, onCancel: cancelRoute),
+      body: data.isNotEmpty ? BookingsList(data: data, onCancel: cancelRoute) :
+      Center(
+          child:
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/empty.png', height: 80, width: 80),
+                const Text("No bookings were found")
+              ]
+          )
+      ),
     );
   }
 

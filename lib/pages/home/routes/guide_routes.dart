@@ -24,7 +24,18 @@ class _MyRoutes extends State<MyRoutes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RoutesList(data: data, onDelete: deleteRoute, operationsList: const ["Delete"],),
+      body: data.isNotEmpty ?
+       RoutesList(data: data, onDelete: deleteRoute, operationsList: const ["Delete"],) :
+       Center(
+           child:
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               Image.asset('assets/empty.png', height: 80, width: 80),
+               const Text("No routes were found.\nTry creating a new one")
+             ]
+          )
+       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Add new route'),
