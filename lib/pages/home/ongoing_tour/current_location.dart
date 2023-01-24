@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:remote_guide_firebase/pages/home/ongoing_tour/video.dart';
 
 class CurrentLocation extends StatefulWidget {
@@ -74,14 +75,15 @@ class _CurrentLocation extends State<CurrentLocation> {
                 alignment: AlignmentDirectional.bottomStart,
                 child: ElevatedButton(
                     onPressed: () {
-                      print("[INFO] Video call started...");
-                      String subjectText = "Tour name: ${widget.title} \nguide ${widget.clientId} \nfor ${widget.guideId}";
+                      String roomName = "${widget.title}-${DateFormat('dd-MM-yyyy').format(DateTime.now())}-${widget.clientId.split("@")[0]}";
+                      String subjectText = "Tour name: ${widget.title} \nguide ${widget.guideId} \nfor ${widget.clientId}";
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   Video(
-                                      roomText: widget.title,
+                                      roomText: roomName,
                                       subjectText: subjectText,
                                       nameText: auth.currentUser?.email ?? "User",
                                       emailText: auth.currentUser?.email ?? "fake@email.com",
