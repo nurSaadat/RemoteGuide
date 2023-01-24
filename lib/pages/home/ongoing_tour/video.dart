@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 class Video extends StatefulWidget {
-  final String roomName;
+  final String roomText;
   final String subjectText;
   final String nameText;
   final String emailText;
 
   const Video({
     Key? key,
-    required this.roomName,
+    required this.roomText,
     required this.subjectText,
     required this.nameText,
     required this.emailText,
@@ -25,10 +25,6 @@ class Video extends StatefulWidget {
 
 class _Video extends State<Video> {
   final serverText = TextEditingController();
-  final roomText = TextEditingController(text: "plugintestroom");
-  final subjectText = TextEditingController(text: "My Plugin Test Meeting");
-  final nameText = TextEditingController(text: "Plugin Test User");
-  final emailText = TextEditingController(text: "fake@email.com");
   final iosAppBarRGBAColor =
   TextEditingController(text: "#0080FF80"); //transparent blue
   bool? isAudioOnly = true;
@@ -57,7 +53,8 @@ class _Video extends State<Video> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Video call ongoing'),
+          backgroundColor: Colors.green,
+          title: const Text('Video settings'),
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(
@@ -105,17 +102,7 @@ class _Video extends State<Video> {
             height: 16.0,
           ),
           TextField(
-            controller: serverText,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "Server URL",
-                hintText: "Hint: Leave empty for meet.jitsi.si"),
-          ),
-          const SizedBox(
-            height: 14.0,
-          ),
-          TextField(
-            controller: roomText,
+            controller: TextEditingController(text: widget.roomText),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Room",
@@ -125,7 +112,9 @@ class _Video extends State<Video> {
             height: 14.0,
           ),
           TextField(
-            controller: subjectText,
+            controller: TextEditingController(text: widget.subjectText),
+            keyboardType: TextInputType.multiline,
+            maxLines: 3,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Subject",
@@ -135,7 +124,7 @@ class _Video extends State<Video> {
             height: 14.0,
           ),
           TextField(
-            controller: nameText,
+            controller: TextEditingController(text: widget.nameText),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Display Name",
@@ -145,7 +134,7 @@ class _Video extends State<Video> {
             height: 14.0,
           ),
           TextField(
-            controller: emailText,
+            controller: TextEditingController(text: widget.emailText),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: "Email",
@@ -154,18 +143,8 @@ class _Video extends State<Video> {
           const SizedBox(
             height: 14.0,
           ),
-          TextField(
-            controller: iosAppBarRGBAColor,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "AppBar Color(IOS only)",
-                hintText: "Hint: This HAS to be in HEX RGBA format"),
-          ),
-          const SizedBox(
-            height: 14.0,
-          ),
           CheckboxListTile(
-            title: Text("Audio Only"),
+            title: const Text("Audio Only"),
             value: isAudioOnly,
             onChanged: _onAudioOnlyChanged,
           ),
@@ -251,23 +230,23 @@ class _Video extends State<Video> {
       }
     }
     // Define meetings options here
-    var options = JitsiMeetingOptions(room: roomText.text)
+    var options = JitsiMeetingOptions(room: widget.roomText)
       ..serverURL = serverUrl
-      ..subject = subjectText.text
-      ..userDisplayName = nameText.text
-      ..userEmail = emailText.text
+      ..subject = widget.subjectText
+      ..userDisplayName = widget.nameText
+      ..userEmail = widget.emailText
       ..iosAppBarRGBAColor = iosAppBarRGBAColor.text
       ..audioOnly = isAudioOnly
       ..audioMuted = isAudioMuted
       ..videoMuted = isVideoMuted
       ..featureFlags.addAll(featureFlags)
       ..webOptions = {
-        "roomName": roomText.text,
+        "roomName": widget.roomText,
         "width": "100%",
         "height": "100%",
         "enableWelcomePage": false,
         "chromeExtensionBanner": null,
-        "userInfo": {"displayName": nameText.text}
+        "userInfo": {"displayName": widget.nameText}
       };
 
     debugPrint("JitsiMeetingOptions: $options");
