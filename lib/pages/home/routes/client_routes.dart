@@ -24,12 +24,23 @@ class _RoutesToChooseFrom extends State<RoutesToChooseFrom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RoutesList(
+      body: data.isNotEmpty ?
+      RoutesList(
         data: data,
         operationsList: const ["Reserve"],
         onReserve: (String title) {
           Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBooking(tourId: title)));
         },
+      ) :
+      Center(
+        child:
+        Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/empty.png', height: 80, width: 80),
+              const Text("No routes were found")
+            ]
+        )
       ),
     );
   }
