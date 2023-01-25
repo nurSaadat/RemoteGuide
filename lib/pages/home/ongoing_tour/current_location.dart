@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:remote_guide_firebase/pages/home/ongoing_tour/video.dart';
 
+import 'bluetooth.dart';
+
 class CurrentLocation extends StatefulWidget {
   final String title;
   final String clientId;
@@ -89,7 +91,8 @@ class _CurrentLocation extends State<CurrentLocation> {
                                       emailText: auth.currentUser?.email ?? "fake@email.com",
                                       )
                           )
-                      );},
+                      );
+                      },
                     style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.green)),
                     child: const Text("Call")
                 ),
@@ -97,7 +100,15 @@ class _CurrentLocation extends State<CurrentLocation> {
             Align(
               alignment: AlignmentDirectional.bottomCenter,
               child: ElevatedButton(
-                  onPressed: () => {print("[INFO] Find")},
+                  onPressed: () {
+                    print("[INFO] Find");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FlutterBlueApp()
+                        )
+                    );
+                    },
                   child: const Text("Find buddies")
               ),
             ),

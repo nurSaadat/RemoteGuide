@@ -53,6 +53,7 @@ dependencies:
       url: https://github.com/Eng-NUREDDIN/jitsi_meet.git
       path: jitsi_meet/
       ref: master
+  flutter_blue: ^0.8.0
 
 dev_dependencies:
   flutter_test:
