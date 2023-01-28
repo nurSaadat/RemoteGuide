@@ -75,7 +75,7 @@ class _MyRoutes extends State<MyRoutes> {
             "image": Image.memory(value!),
           });
           // update the state of the widget to see changes in the UI
-          setState(() => data = data);
+          setState(() {});
         });
       }
     });

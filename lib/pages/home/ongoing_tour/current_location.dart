@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:remote_guide_firebase/pages/home/ongoing_tour/routing_map.dart';
+import 'package:remote_guide_firebase/pages/home/ongoing_tour/test_map.dart';
 import 'package:remote_guide_firebase/pages/home/ongoing_tour/video.dart';
 
 class CurrentLocation extends StatefulWidget {
@@ -41,7 +42,8 @@ class _CurrentLocation extends State<CurrentLocation> {
       future: _data,
       builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return RoutingMap(route: snapshot.data, title: widget.title, clientId: widget.clientId, guideId: widget.guideId,);
+          return TestMap();
+            // RoutingMap(route: snapshot.data, title: widget.title, clientId: widget.clientId, guideId: widget.guideId,);
         }
         else {
           return const CircularProgressIndicator();
