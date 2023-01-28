@@ -27,6 +27,13 @@ class CurrentLocation extends StatefulWidget {
   State<CurrentLocation> createState() => _CurrentLocation();
 }
 
+class CustomLatLng {
+  final double lat;
+  final double lng;
+
+  CustomLatLng({required this.lat, required this.lng});
+}
+
 class _CurrentLocation extends State<CurrentLocation> {
   late Future<Object?> _data;
 
@@ -42,7 +49,8 @@ class _CurrentLocation extends State<CurrentLocation> {
       future: _data,
       builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return TestMap();
+          return
+            TestMap(data: snapshot.data);
             // RoutingMap(route: snapshot.data, title: widget.title, clientId: widget.clientId, guideId: widget.guideId,);
         }
         else {
