@@ -49,12 +49,10 @@ class _CurrentLocation extends State<CurrentLocation> {
       future: _data,
       builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return
-            TestMap(data: snapshot.data);
-            // RoutingMap(route: snapshot.data, title: widget.title, clientId: widget.clientId, guideId: widget.guideId,);
+          return RoutingMap(data: snapshot.data, title: widget.title, clientId: widget.clientId, guideId: widget.guideId,);
         }
         else {
-          return const CircularProgressIndicator();
+          return const Scaffold(body: Center(child:CircularProgressIndicator()));
         }
       });
   }

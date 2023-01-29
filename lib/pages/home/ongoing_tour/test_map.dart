@@ -143,18 +143,18 @@ class _TestMapState extends State<TestMap> {
     }
 
     return currentLocation == null
-        ? const Center(child: Text("Loading", style: TextStyle(color: Colors.white, fontSize: 12),))
+        ? const Center(child: CircularProgressIndicator())
         : GoogleMap(
-      initialCameraPosition: CameraPosition(
-          target:
-          LatLng(
-              currentLocation!.latitude!, currentLocation!.longitude!),
-          zoom: 14.5),
-      polylines: tourRoute,
-      markers: mapMarkers.toSet(),
-      onMapCreated: (mapController) {
-        _controller.complete(mapController);
-      },
-    );
+          initialCameraPosition: CameraPosition(
+              target:
+              LatLng(
+                  currentLocation!.latitude!, currentLocation!.longitude!),
+              zoom: 14.5),
+          polylines: tourRoute,
+          markers: mapMarkers.toSet(),
+          onMapCreated: (mapController) {
+            _controller.complete(mapController);
+          },
+        );
   }
 }
