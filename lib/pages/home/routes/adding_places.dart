@@ -116,7 +116,7 @@ class _AddingPlaces extends State<AddingPlaces> {
       infoWindow: InfoWindow(title: detail.result.name)
     ));
 
-    tourStops.add(detail.result.placeId);
+    tourStops.add({"lat": lat, "lng": lng});
     setState(() {
       tourStops = tourStops;
     });
