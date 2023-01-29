@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:image/image.dart' as dart_img;
 
 class TestMap extends StatefulWidget {
   final data;
@@ -23,9 +25,7 @@ class _TestMapState extends State<TestMap> {
   LocationData? currentLocation;
   Set<Marker> markers = {};
 
-  // BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
-  // BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
-  // BitmapDescriptor userIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor userIcon = BitmapDescriptor.defaultMarker;
 
   Future<void> getCurrentLocation () async {
     Location location = Location();
@@ -44,7 +44,7 @@ class _TestMapState extends State<TestMap> {
         googleMapController.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
-              zoom: 13.5,
+              zoom: 14.5,
               target: LatLng(
                   newLoc.latitude!,
                   newLoc.longitude!
@@ -81,24 +81,30 @@ class _TestMapState extends State<TestMap> {
             width: 6,
           )
       );
-
       setState(() {});
     }
   }
 
-  // void setCustomMarkerIcon(){
-  //   final FirebaseAuth auth = FirebaseAuth.instance;
-  //   Reference firebaseStorage = FirebaseStorage.instance.ref();
-  //
-  //   var urlRef = firebaseStorage
-  //       .child("profile_images")
-  //       .child('${auth.currentUser?.email?.toLowerCase()}.jpg');
-  //
-  //   urlRef.getData().then((value) => BitmapDescriptor.fromBytes(value!));
-  // }
+  void setCustomMarkerIcon(){
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    Reference firebaseStorage = FirebaseStorage.instance.ref();
+
+    var urlRef = firebaseStorage
+        .child("profile_images")
+        .child('${auth.currentUser?.email?.toLowerCase()}.jpg');
+
+    urlRef.getData().then((value) {
+      Uint8List? resizedData = value;
+      dart_img.Image? img = dart_img.decodeImage(value!);
+      dart_img.Image resized = dart_img.copyResize(img!, width: 80, height: 80);
+      resizedData = Uint8List.fromList(dart_img.encodePng(resized));
+      userIcon = BitmapDescriptor.fromBytes(resizedData);
+    });
+  }
 
   @override
   void initState() {
+    setCustomMarkerIcon();
     getCurrentLocation();
     for (var i = 0; i < widget.data.get("stopsList").length - 1; i++) {
       var source = widget.data.get("stopsList")[i];
@@ -126,10 +132,13 @@ class _TestMapState extends State<TestMap> {
     }
 
     if (currentLocation != null) {
-      mapMarkers.add(Marker(
+      mapMarkers.add(
+        Marker(
           markerId: const MarkerId("currentLocation"),
           position: LatLng(
-              currentLocation!.latitude!, currentLocation!.longitude!)),
+              currentLocation!.latitude!, currentLocation!.longitude!),
+          icon: userIcon,
+        ),
       );
     }
 
