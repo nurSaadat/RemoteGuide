@@ -10,16 +10,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:image/image.dart' as dart_img;
 
-class TestMap extends StatefulWidget {
+class GuideView extends StatefulWidget {
   final data;
   final String client;
-  const TestMap({required this.data, required this.client, Key? key}) : super(key: key);
+  const GuideView({required this.data, required this.client, Key? key}) : super(key: key);
 
   @override
-  State<TestMap> createState() => _TestMapState();
+  State<GuideView> createState() => _GuideView();
 }
 
-class _TestMapState extends State<TestMap> {
+class _GuideView extends State<GuideView> {
   final Completer<GoogleMapController> _controller = Completer();
   static const kGoogleApiKey = "AIzaSyAZx3e0C2EULlN-xGVRJFBS78JI9esJs04";
 
@@ -27,43 +27,16 @@ class _TestMapState extends State<TestMap> {
   LocationData? currentLocation;
   Set<Marker> markers = {};
 
-  BitmapDescriptor userIcon = BitmapDescriptor.defaultMarker;
 
   Future<void> getCurrentLocation () async {
-    Location location = Location();
+    final ref = FirebaseFirestore.instance;
+      ref.collection('location')
+          .doc(widget.client)
+          .snapshots()
+          .listen((event) => currentLocation = LocationData.fromMap({"latitude": event.data()!["lat"], "longitude": event.data()!["lng"]}));
+          // .get().then((value) => currentLocation = LocationData.fromMap({"latitude": value.data()!["lat"], "longitude": value.data()!["lng"]}));
 
-    location.getLocation().then(
-          (location){
-        currentLocation = location;
-        setState(() {});
-      },
-    );
-
-    GoogleMapController googleMapController = await _controller.future;
-    location.onLocationChanged.listen(
-      (newLoc) {
-        currentLocation = newLoc;
-        googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              zoom: 14.5,
-              target: LatLng(
-                  newLoc.latitude!,
-                  newLoc.longitude!
-              )
-            )
-          )
-        );
-        setState(() {});
-        final ref = FirebaseFirestore.instance;
-        ref.collection('location')
-            .doc(widget.client)
-            .set({
-          "lat": newLoc.latitude,
-          "lng": newLoc.longitude,
-        });
-      });
-  }
+}
 
   void getPolyPoints(int? idx, source, destination) async {
     List<LatLng> polylineCoordinates = [];
@@ -94,26 +67,8 @@ class _TestMapState extends State<TestMap> {
     }
   }
 
-  void setCustomMarkerIcon(){
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    Reference firebaseStorage = FirebaseStorage.instance.ref();
-
-    var urlRef = firebaseStorage
-        .child("profile_images")
-        .child('${auth.currentUser?.email?.toLowerCase()}.jpg');
-
-    urlRef.getData().then((value) {
-      Uint8List? resizedData = value;
-      dart_img.Image? img = dart_img.decodeImage(value!);
-      dart_img.Image resized = dart_img.copyResize(img!, width: 80, height: 80);
-      resizedData = Uint8List.fromList(dart_img.encodePng(resized));
-      userIcon = BitmapDescriptor.fromBytes(resizedData);
-    });
-  }
-
   @override
   void initState() {
-    setCustomMarkerIcon();
     getCurrentLocation();
     for (var i = 0; i < widget.data.get("stopsList").length - 1; i++) {
       var source = widget.data.get("stopsList")[i];
@@ -146,24 +101,22 @@ class _TestMapState extends State<TestMap> {
           markerId: const MarkerId("currentLocation"),
           position: LatLng(
               currentLocation!.latitude!, currentLocation!.longitude!),
-          icon: userIcon,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan)
         ),
       );
     }
 
-    return currentLocation == null
-        ? const Center(child: CircularProgressIndicator())
-        : GoogleMap(
-          initialCameraPosition: CameraPosition(
-              target:
-              LatLng(
-                  currentLocation!.latitude!, currentLocation!.longitude!),
-              zoom: 14.5),
-          polylines: tourRoute,
-          markers: mapMarkers.toSet(),
-          onMapCreated: (mapController) {
-            _controller.complete(mapController);
-          },
-        );
+    return currentLocation == null ? Text("data") : GoogleMap(
+      initialCameraPosition: CameraPosition(
+          target:
+          LatLng(
+              currentLocation!.latitude!, currentLocation!.longitude!),
+          zoom: 14.5),
+      polylines: tourRoute,
+      markers: mapMarkers.toSet(),
+      onMapCreated: (mapController) {
+        _controller.complete(mapController);
+      },
+    );
   }
 }

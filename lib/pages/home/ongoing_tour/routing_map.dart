@@ -6,6 +6,7 @@ import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:remote_guide_firebase/pages/home/ongoing_tour/guide_view.dart';
 import 'package:remote_guide_firebase/pages/home/ongoing_tour/test_map.dart';
 import 'package:remote_guide_firebase/pages/home/ongoing_tour/video.dart';
 
@@ -43,7 +44,9 @@ class _RoutingMap extends State<RoutingMap> {
           ),
           body: Stack(
             children: [
-              TestMap(data: widget.data),
+              auth.currentUser?.email == widget.guideId
+                  ? GuideView(data: widget.data, client: widget.clientId)
+                  : TestMap(data: widget.data, client: widget.clientId),
               Align(
                 alignment: AlignmentDirectional.bottomStart,
                 child: ElevatedButton(
@@ -67,13 +70,13 @@ class _RoutingMap extends State<RoutingMap> {
                     child: const Text("Call")
                 ),
               ),
-              Align(
-                alignment: AlignmentDirectional.bottomCenter,
-                child: ElevatedButton(
-                    onPressed: () => {print("[INFO] Find")},
-                    child: const Text("Find buddies")
-                ),
-              ),
+              // Align(
+              //   alignment: AlignmentDirectional.bottomCenter,
+              //   child: ElevatedButton(
+              //       onPressed: () => {print("[INFO] Find")},
+              //       child: const Text("Find buddies")
+              //   ),
+              // ),
               Align(
                   alignment: AlignmentDirectional.bottomEnd,
                   child:
