@@ -35,6 +35,9 @@ class _RoutesList extends State<RoutesList> {
           operationsList: widget.operationsList,
           onDelete: widget.onDelete,
           onReserve: widget.onReserve,
+          startDate: DateTime.fromMillisecondsSinceEpoch(widget.data[index]['startDate'].seconds * 1000),
+          endDate: DateTime.fromMillisecondsSinceEpoch(widget.data[index]['endDate'].seconds * 1000),
+          guideId: widget.data[index]['guideId'],
         );
       },
     );

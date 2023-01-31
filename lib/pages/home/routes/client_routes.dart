@@ -60,6 +60,9 @@ class _RoutesToChooseFrom extends State<RoutesToChooseFrom> {
           data.add({
             "name": doc.get('name'),
             "description": doc.get('description'),
+            "startDate": doc.get('startDate'),
+            "endDate": doc.get('endDate'),
+            "guideId": doc.get('guideId'),
             "image": Image.memory(value!),
           });
           // update the state of the widget to see changes in the UI

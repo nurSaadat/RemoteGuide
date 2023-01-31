@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:remote_guide_firebase/pages/home/routes/route_info.dart';
 
 class RouteListItem extends StatelessWidget {
   final Widget thumbnail;
   final String title;
   final String subtitle;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String guideId;
   final List<String> operationsList;
   final Function? onDelete;
   final Function? onReserve;
@@ -13,6 +17,9 @@ class RouteListItem extends StatelessWidget {
     required this.thumbnail,
     required this.title,
     required this.subtitle,
+    required this.startDate,
+    required this.endDate,
+    required this.guideId,
     required this.operationsList,
     this.onDelete,
     this.onReserve,
@@ -39,35 +46,54 @@ class RouteListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Card(
-        elevation: 5,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: thumbnail,
-            ),
-            Expanded(
-              flex: 3,
-              child: _Description(
+      child: GestureDetector(
+        onTap: () => {
+          Navigator.push(context,
+            MaterialPageRoute(builder: (context) =>
+              TourInfo(
+                thumbnail: thumbnail,
                 title: title,
                 subtitle: subtitle,
+                operationsList: operationsList,
+                onDelete: onDelete,
+                onReserve: onReserve,
+                startDate: startDate,
+                endDate: endDate,
+                guideId: guideId,
+              )
+            )
+          )
+        },
+        child: Card(
+          elevation: 5,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: thumbnail,
               ),
-            ),
-            PopupMenuButton<String>(
-              onSelected: handleClick,
-              itemBuilder: (BuildContext context) {
-                return operationsList.map((String choice) {
-                  return PopupMenuItem<String>(
-                    value: choice,
-                    child: Text(choice),
-                  );
-                }).toList();
-              },
-            ),
-          ],
+              Expanded(
+                flex: 3,
+                child: _Description(
+                  title: title,
+                  subtitle: subtitle,
+                ),
+              ),
+              PopupMenuButton<String>(
+                onSelected: handleClick,
+                itemBuilder: (BuildContext context) {
+                  return operationsList.map((String choice) {
+                    return PopupMenuItem<String>(
+                      value: choice,
+                      child: Text(choice),
+                    );
+                  }).toList();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
