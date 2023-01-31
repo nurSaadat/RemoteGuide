@@ -36,15 +36,28 @@ class _BookingInfoState extends State<BookingInfo> {
             children: <Widget>[
               const Padding(
                 padding: EdgeInsets.fromLTRB(12,16,12,4),
-                child: Text('Tour name'),
+                child: Text('Tour name',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(12,16,12,4),
-                child: Text(widget.tour.get('name')),
+                padding: const EdgeInsets.fromLTRB(12,0,12,4),
+                child: Text(widget.tour.get('name'),
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(12,16,12,4),
-                child: Text('Tour date'),
+                child: Text('Tour date',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(12,0,12,8),
