@@ -16,6 +16,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
     return Scaffold(
       body: Column(
         children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 12.0),
+          ),
           const ProfileImage(),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, top: 8.0),

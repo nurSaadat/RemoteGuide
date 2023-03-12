@@ -51,7 +51,7 @@ class _RoutingMap extends State<RoutingMap> {
                 alignment: AlignmentDirectional.bottomStart,
                 child: ElevatedButton(
                     onPressed: () {
-                      String roomName = "${widget.title}-${DateFormat('dd-MM-yyyy').format(DateTime.now())}-${widget.clientId.split("@")[0]}";
+                      String roomName = "${widget.title.splitMapJoin(" ", onMatch: (m) => "")}-${DateFormat('dd-MM-yyyy').format(DateTime.now())}-${widget.clientId.split("@")[0]}";
                       String subjectText = "Tour name: ${widget.title} \nguide ${widget.guideId} \nfor ${widget.clientId}";
 
                       Navigator.push(
