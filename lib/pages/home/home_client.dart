@@ -35,7 +35,7 @@ class _HomeClientState extends State<HomeClient> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'My routes',
+            label: 'Routes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
